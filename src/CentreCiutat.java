@@ -5,7 +5,7 @@ public class CentreCiutat {
 		// TODO Auto-generated method stub
 		System.out.println("Hola. Mundo!!");
 		
-		System.out.println("Adios, mundo!");
+		System.out.println("Adios, mundo!!");
 
 	}
 
