@@ -8,6 +8,13 @@ public class CentreCiutat {
 		// Prueba de commit
 		System.out.println("Prueba #1");
 
+		System.out.println("Adios, mundo!!");
+		
+		System.out.println("Hola, mundo LLuís!");
+
+		System.out.println("Hola, mundo Tomeu!");
+		
+		System.out.println("Hola, mundo Erick");
 	}
 
 }
