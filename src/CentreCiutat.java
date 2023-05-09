@@ -6,7 +6,7 @@ public class CentreCiutat {
 		System.out.println("Hola. Mundo!!");
 		
 		// Prueba de commit
-		System.out.println("Prueba DarielsMtz #1");
+		System.out.println("Prueba #1");
 
 	}
 
