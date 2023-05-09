@@ -14,7 +14,7 @@ Scanner in = new Scanner (System.in);
 		System.out.println("Por favor, introduzca los siguientes datos:");
 		System.out.print("Usuario: ");
 		String usuario = in.next();
-		
+		System.out.println("Prueba");
 		System.out.print("Contraseña: ");
 		String contraseña = in.next();
 		
