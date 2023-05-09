@@ -9,6 +9,7 @@ public class CentreCiutat {
 		
 		System.out.println("Hola, mundo LLuís!");
 
+		System.out.println("Hola, mundo Tomeu!");
 	}
 
 }
