@@ -1,10 +1,11 @@
+package Lluís;
 import java.util.*;
 
-public class CentreCiutat {
+public class TestLluis {
 
 	public static void main(String[] args) {
 
-Scanner in = new Scanner (System.in);
+		Scanner in = new Scanner (System.in);
 		
 		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
@@ -20,6 +21,10 @@ Scanner in = new Scanner (System.in);
 		
 		System.out.println(usuario+" "+contraseña);
 		
+		
+		
+		
+
 	}
 
 }
