@@ -6,6 +6,8 @@ public class CentreCiutat {
 		System.out.println("Hola. Mundo!!");
 		
 		System.out.println("Adios, mundo!!");
+		
+		System.out.println("Hola, mundo LLuís!");
 
 	}
 
