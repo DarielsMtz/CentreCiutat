@@ -42,22 +42,5 @@ public class TestDariels {
         }
     }
 
-    // Agrega una plaza de estacionamiento a la base de datos
-    public void agregarPlaza(int id, int numeroPlaza, boolean disponible) {
-        String sql = "INSERT INTO plazas_estacionamiento (id, numero_plaza, disponible) VALUES (?, ?, ?)";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.setInt(2, numeroPlaza);
-            statement.setBoolean(3, disponible);
-            statement.executeUpdate();
-            System.out.println("Plaza de estacionamiento agregada correctamente");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }
 
