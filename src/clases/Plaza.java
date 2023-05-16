@@ -49,17 +49,13 @@ public class Plaza {
 
 	public void setEstado(estadoPlaza estado) {
 		this.estado = estado;
+	}
+
+	// Métodos extra
+	@Override
+	public String toString() {
+		return "Plaza [idPlaza=" + idPlaza + ", m2=" + m2 + ", precio=" + precio + ", estado=" + estado + "]";
 	};
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 }

@@ -59,6 +59,13 @@ public class Vehiculo {
 	public void setTipo(tipoVehiculo tipo) {
 		this.tipo = tipo;
 	}
+
+	// Métodos extra
+	@Override
+	public String toString() {
+		return "Vehiculo [modelo=" + modelo + ", color=" + color + ", motor=" + motor + ", matricula=" + matricula
+				+ ", tipo=" + tipo + "]";
+	}
 	
 	
 	
