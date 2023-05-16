@@ -39,7 +39,14 @@ public abstract class Usuario {
 
 	public void setTipo(tipoUsuario tipo) {
 		this.tipo = tipo;
+	}
+
+	// Métodos extra
+	@Override
+	public String toString() {
+		return "Usuario [usuario=" + usuario + ", contraseña=" + contraseña + ", tipo=" + tipo + "]";
 	};
+	
 	
 	
 	
