@@ -3,44 +3,80 @@ package Dariels;
 import java.sql.*;
 
 public class TestDariels {
+
+	// Método main para probar la conexión y los métodos
+	public static void main(String[] args) throws SQLException {
+		
+		TestDariels dao = new TestDariels();
+		// Metodo para establecer la conexion con la bases de datos
+		dao.setupConnection();
+		
+		// Metodo para la creacion de la tabla plaza
+		dao.crearTablaPlazas();
+		
+		// Metodo para la creacion de la tabla clientes
+		// dao.crearTablaClientes();
+		// dao.agregarPlaza(1, 1, true);
+		// dao.agregarPlaza(2, 2, false);
+	}
+
+	private Connection con;
+
+	// Configura la conexión con la base de datos
+	public void setupConnection() {
+		String url = "jdbc:mysql://localhost:3306/centre-ciutat";
+		String username = "root";
+		String password = "";
+
+		try {
+			con = DriverManager.getConnection(url, username, password);
+			System.out.println("Conexión exitosa");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Crea la tabla de plazas de estacionamiento
+	public void crearTablaPlazas() throws SQLException {
+		
+		Statement stmt = null;
+		String sql = "CREATE TABLE plazas_estacionamiento (id INT PRIMARY KEY, numero_plaza INT, disponible BOOLEAN)";
+		
+		try {
+			
+			stmt = con.createStatement();
+			
+			stmt.executeUpdate(sql);
+			
+			System.out.println("Tabla de plazas de estacionamiento creada correctamente");
+			
+		} catch (SQLException e) {
+			printSQLException(e);
+			
+		} finally {
+			stmt.close();
+		}
+	}
 	
-    // Método main para probar la conexión y los métodos
-    public static void main(String[] args) {
-    	TestDariels dao = new TestDariels();
-        dao.setupConnection();
-        dao.crearTablaPlazas();
-       // dao.agregarPlaza(1, 1, true);
-       // dao.agregarPlaza(2, 2, false);
-    }
-    private Connection connection;
-   
+	// Metodo para crear la tabla de clientes
+	
+	
+	
+	// Metodo de SQLException
+	private static void printSQLException(SQLException exception) {
 
-    // Configura la conexión con la base de datos
-    public void setupConnection() {
-        String url = "jdbc:mysql://localhost:3306/centre-ciutat";
-        String username = "root";
-        String password = "";
+		exception.printStackTrace(System.err);
+		System.err.println("SQLState: " + exception.getSQLState()); // getSQLState()
+		System.err.println("Error Code: " + exception.getErrorCode()); // getErrorCode()
+		System.err.println("Message: " + exception.getMessage()); // getMessage()
 
-        try {
-            connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Conexión exitosa");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+		Throwable th = exception.getCause(); // getCause() - Leemos la primera causa
 
-    // Crea la tabla de plazas de estacionamiento
-    public void crearTablaPlazas() {
-        String sql = "CREATE TABLE plazas_estacionamiento (id INT PRIMARY KEY, numero_plaza INT, disponible BOOLEAN)";
+		while (th != null) {
+			System.out.println("Cause: " + th); // Imprimimos una causa
+			th = th.getCause(); // Leemos otra causa
+		}
 
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-            System.out.println("Tabla de plazas de estacionamiento creada correctamente");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	}
 
 }
-
