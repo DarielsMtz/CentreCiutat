@@ -59,6 +59,22 @@ public class TestDariels {
 	}
 	
 	// Metodo para crear la tabla de clientes
+	public void crearTablaCliente() throws SQLException{
+		Statement stmt = null;
+		String sql = "CREATE TABLE cliente ()";
+		
+		try {
+			
+			stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+			System.out.println("Tabla de clientes crear correctamente!");
+			
+		} catch (SQLException e) {
+			printSQLException(e);
+		}finally {
+			stmt.close();
+		}
+	}
 	
 	
 	
