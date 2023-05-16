@@ -6,78 +6,47 @@ public class TestDariels {
 
 	// Método main para probar la conexión y los métodos
 	public static void main(String[] args) throws SQLException {
-		
-		TestDariels dao = new TestDariels();
-		// Metodo para establecer la conexion con la bases de datos
-		dao.setupConnection();
-		
+
+		// Creamos la conexion a la base de datos
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
+		System.out.println("Conexcion establecida correctamente!");
+
 		// Metodo para la creacion de la tabla plaza
-		dao.crearTablaPlazas();
-		
+		// crearTablaPlazas(con, "centreciutat");
+
 		// Metodo para la creacion de la tabla clientes
-		// dao.crearTablaClientes();
+		// crearTablaCliente();
+
 		// dao.agregarPlaza(1, 1, true);
 		// dao.agregarPlaza(2, 2, false);
 	}
 
-	private Connection con;
-
-	// Configura la conexión con la base de datos
-	public void setupConnection() {
-		String url = "jdbc:mysql://localhost:3306/centre-ciutat";
-		String username = "root";
-		String password = "";
-
-		try {
-			con = DriverManager.getConnection(url, username, password);
-			System.out.println("Conexión exitosa");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// Crea la tabla de plazas de estacionamiento
-	public void crearTablaPlazas() throws SQLException {
-		
+	public static void crearTablaPlazas(Connection con, String centreciutat) throws SQLException {
+
+		String createString = "CREATE TABLE " + centreciutat + ".plazas_estacionamiento (" + "id_plaza INT PRIMARY KEY,"
+				+ "estado BOOLEAN," + "tamaño VARCAHR(50)," + "numero_plaza INT," + " precio DOUBLE" + ")";
+
 		Statement stmt = null;
-		String sql = "CREATE TABLE plazas_estacionamiento (id INT PRIMARY KEY, numero_plaza INT, disponible BOOLEAN)";
 		
 		try {
-			
+			// Creamos un Statement
 			stmt = con.createStatement();
+			// Ejecutamos la consulta
+			stmt.executeUpdate(createString);
 			
-			stmt.executeUpdate(sql);
-			
-			System.out.println("Tabla de plazas de estacionamiento creada correctamente");
+			System.out.println("");
+			System.out.println("Se ha creado la tabla Plaza Estacionamientos, correctamente!");
 			
 		} catch (SQLException e) {
 			printSQLException(e);
-			
 		} finally {
 			stmt.close();
 		}
 	}
+
 	
-	// Metodo para crear la tabla de clientes
-	public void crearTablaCliente() throws SQLException{
-		Statement stmt = null;
-		String sql = "CREATE TABLE cliente ()";
-		
-		try {
-			
-			stmt = con.createStatement();
-			stmt.executeUpdate(sql);
-			System.out.println("Tabla de clientes crear correctamente!");
-			
-		} catch (SQLException e) {
-			printSQLException(e);
-		}finally {
-			stmt.close();
-		}
-	}
-	
-	
-	
+
 	// Metodo de SQLException
 	private static void printSQLException(SQLException exception) {
 
