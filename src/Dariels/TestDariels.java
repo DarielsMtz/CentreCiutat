@@ -12,10 +12,13 @@ public class TestDariels {
 		System.out.println("Conexcion establecida correctamente!");
 
 		// Metodo para la creacion de la tabla plaza
-		// crearTablaPlazas(con, "centreciutat");
+		 crearTablaPlazas(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla clientes
-		// crearTablaCliente();
+		 crearTablaCliente(con, "centreciutat");
+
+		// Metodo para crear la tabla Vehiculo
+		crearTablaVehiculo(con, "centreciutat");
 
 		// dao.agregarPlaza(1, 1, true);
 		// dao.agregarPlaza(2, 2, false);
@@ -24,20 +27,20 @@ public class TestDariels {
 	// Crea la tabla de plazas de estacionamiento
 	public static void crearTablaPlazas(Connection con, String centreciutat) throws SQLException {
 
-		String createString = "CREATE TABLE " + centreciutat + ".plazas_estacionamiento (" + "id_plaza INT PRIMARY KEY,"
-				+ "estado BOOLEAN," + "tamaño VARCAHR(50)," + "numero_plaza INT," + " precio DOUBLE" + ")";
+		String createString = "CREATE TABLE " + centreciutat + ".plazas_estacionamiento ("
+				+ "id_plaza INT PRIMARY KEY AUTO_INCREMENT," + "estado BOOLEAN," + "tamaño VARCHAR(50),"
+				+ "numero_plaza INT," + " precio DOUBLE" + ")";
 
 		Statement stmt = null;
-		
 		try {
 			// Creamos un Statement
 			stmt = con.createStatement();
 			// Ejecutamos la consulta
 			stmt.executeUpdate(createString);
-			
+
 			System.out.println("");
 			System.out.println("Se ha creado la tabla Plaza Estacionamientos, correctamente!");
-			
+
 		} catch (SQLException e) {
 			printSQLException(e);
 		} finally {
@@ -45,7 +48,52 @@ public class TestDariels {
 		}
 	}
 
-	
+	// Metodo para crear la tabla Clientes
+	private static void crearTablaCliente(Connection con, String centreciutat) throws SQLException {
+		String createString = "CREATE TABLE " + centreciutat + ".clientes ("
+				+ "id_cliente INT PRIMARY KEY AUTO_INCREMENT," + "nombre VARCHAR(50)," + "apellido VARCHAR(50),"
+				+ "dni VARCHAR(50)," + "direccion VARCHAR(50)," + "cuenta_corriente VARCHAR(50)" + ")";
+
+		Statement stmt = null;
+
+		try {
+			// Creamos un Statement
+			stmt = con.createStatement();
+			// ejecutamos la consulta
+			stmt.executeUpdate(createString);
+
+			System.out.println("");
+			System.out.println("Se ha creado la tabla Clientes correctamente!!");
+		} catch (SQLException e) {
+			printSQLException(e);
+		} finally {
+			stmt.close();
+		}
+	}
+
+	// Metodo para crear la tabla vehiculo
+	private static void crearTablaVehiculo(Connection con, String centreciutat) throws SQLException {
+		String createString = "CREATE TABLE " + centreciutat + ".vehiculo ("
+				+ "id_vehiculo INT PRIMARY KEY AUTO_INCREMENT," + "marca VARCHAR(50)," + "modelo VARCHAR(50),"
+				+ "color VARCHAR(50)," + "motor VARCHAR(50)," + "matricula VARCHAR(50)," + "tipo VARCHAR(50)" + ")";
+
+		Statement stmt = null;
+		try {
+			// Creamos un Statement
+			stmt = con.createStatement();
+			// Ejecuatmos la consulta
+			stmt.executeUpdate(createString);
+
+			System.out.println("");
+			System.out.println("Se ha creado la tabla Vehiculo correctamente!");
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		} finally {
+			stmt.close();
+		}
+
+	}
 
 	// Metodo de SQLException
 	private static void printSQLException(SQLException exception) {
