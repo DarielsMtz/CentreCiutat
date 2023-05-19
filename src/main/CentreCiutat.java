@@ -7,7 +7,8 @@ public class CentreCiutat {
 
 Scanner in = new Scanner (System.in);
 		
-		System.out.println("=================================");
+		// Login
+		/*System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
 		
@@ -18,10 +19,56 @@ Scanner in = new Scanner (System.in);
 		System.out.print("Contraseña: ");
 		String contraseña = in.next();
 		
-		System.out.println(usuario+" "+contraseña);
+		System.out.println(usuario+" "+contraseña);*/
+		
+		
+		
+		// Consola de admin
+		do {
+			System.out.println("=================================");
+			System.out.println("===== Centre Ciutat Parking =====");
+			System.out.println("=== Consola del Administrador ===");
+			System.out.println("=================================");
+			System.out.println();
+			
+			System.out.println("Bienvenido, administrador");
+			System.out.println("Por favor, escoja una opción");
+			
+			
+			switch (in.nextInt()){
+			case 1:
+				System.out.println("accion 1");
+				break;
+			case 2: 
+				System.out.println("accion 2");
+				break;
+				
+			}
+			
+			
+			
+			
+		} while (in.next()!="Exit"||in.next()!="exit"||in.next()!="EXIT");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		in.close();
-		
 	}
 
 }
