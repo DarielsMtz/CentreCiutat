@@ -96,7 +96,6 @@ public class TestDariels {
 
 	}
 
-	
 	// Método para obtener todas las plazas de estacionamiento
 	private static void obtenerPlazas(Connection con, String centreciutat) throws SQLException {
 		

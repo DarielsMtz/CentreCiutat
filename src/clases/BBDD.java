@@ -2,10 +2,12 @@ package clases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BBDD {
+
 	// Método main para probar la conexión y los métodos
 	public static void main(String[] args) throws SQLException {
 
@@ -14,16 +16,17 @@ public class BBDD {
 		System.out.println("Conexcion establecida correctamente!");
 
 		// Metodo para la creacion de la tabla plaza
-		crearTablaPlazas(con, "centreciutat");
+		 crearTablaPlazas(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla clientes
-		crearTablaCliente(con, "centreciutat");
+		 crearTablaCliente(con, "centreciutat");
 
 		// Metodo para crear la tabla Vehiculo
-		crearTablaVehiculo(con, "centreciutat");
+		 crearTablaVehiculo(con, "centreciutat");
 
-		// dao.agregarPlaza(1, 1, true);
-		// dao.agregarPlaza(2, 2, false);
+		// Metodo para obtener las plaza
+		obtenerPlazas(con, "centreciutat");
+
 	}
 
 	// Crea la tabla de plazas de estacionamiento
@@ -95,6 +98,55 @@ public class BBDD {
 			stmt.close();
 		}
 
+	}
+
+	// Método para obtener todas las plazas de estacionamiento
+	private static void obtenerPlazas(Connection con, String centreciutat) throws SQLException {
+
+		String query = "SELECT * FROM " + centreciutat + ".plazas_estacionamiento";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			// Creamos un Statement
+			stmt = con.createStatement();
+
+			// Ejecutamos la consulta
+			rs = stmt.executeQuery(query);
+
+			// Iteramos sobre los resultados
+			while (rs.next()) {
+				int idPlaza = rs.getInt("id_plaza");
+				boolean estado = rs.getBoolean("estado");
+				String tamaño = rs.getString("tamaño");
+				int numeroPlaza = rs.getInt("numero_plaza");
+				double precio = rs.getDouble("precio");
+
+				// Imprimimos los datos de cada plaza
+				System.out.println("ID Plaza: " + idPlaza);
+				System.out.println("Estado: " + estado);
+				System.out.println("Tamaño: " + tamaño);
+				System.out.println("Número de plaza: " + numeroPlaza);
+				System.out.println("Precio: " + precio);
+				System.out.println("---------------------------");
+			}
+
+			System.out.println("");
+			System.out.println("Consulta de plazas finalizada!");
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		} finally {
+
+			// Cerramos los recursos
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
 	}
 
 	// Metodo de SQLException
