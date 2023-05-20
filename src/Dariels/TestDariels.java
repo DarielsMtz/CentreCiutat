@@ -1,6 +1,7 @@
 package Dariels;
 
 import java.sql.*;
+import clases.Usuario.*;
 
 public class TestDariels {
 
@@ -21,7 +22,7 @@ public class TestDariels {
 		// crearTablaVehiculo(con, "centreciutat");
 		
 		// Metodo para obtener las plaza
-		obtenerPlazas(con, "centreciutat");
+		// obtenerPlazas(con, "centreciutat");
 
 	}
 

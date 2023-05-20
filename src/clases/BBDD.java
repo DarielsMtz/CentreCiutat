@@ -15,17 +15,27 @@ public class BBDD {
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
 		System.out.println("Conexcion establecida correctamente!");
 
+		// Metodo para crear la tabla Usuarios
+		// Solo se ejecutara una vez!
+		crearTablaUsuarios(con, "centreciuata");
+
+		// Metodo para agregar los usuarios
+		agregarusuarios(con, "centreciutat");
+
 		// Metodo para la creacion de la tabla plaza
-		 crearTablaPlazas(con, "centreciutat");
+		// Solo se ejecutara una vez!
+		// crearTablaPlazas(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla clientes
-		 crearTablaCliente(con, "centreciutat");
+		// Solo se ejecutara una vez!
+		// crearTablaCliente(con, "centreciutat");
 
 		// Metodo para crear la tabla Vehiculo
-		 crearTablaVehiculo(con, "centreciutat");
+		// Solo se ejecutara una vez!
+		// crearTablaVehiculo(con, "centreciutat");
 
 		// Metodo para obtener las plaza
-		obtenerPlazas(con, "centreciutat");
+		// obtenerPlazas(con, "centreciutat");
 
 	}
 
@@ -146,6 +156,55 @@ public class BBDD {
 			if (stmt != null) {
 				stmt.close();
 			}
+		}
+	}
+
+	// Metodo para crear Usuario
+	private static void crearTablaUsuarios(Connection con, String centreciutat) throws SQLException {
+
+		String createString = "CREATE TABLE usuarios (" + "id INT PRIMARY KEY AUTO_INCREMENT,"
+				+ "tipo VARCHAR(20) NOT NULL," + "nombre_usuario VARCHAR(50) NOT NULL,"
+				+ "contrasena VARCHAR(50) NOT NULL" + ")";
+
+		Statement stmt = null;
+		try {
+			// Creamos un Statement
+			stmt = con.createStatement();
+
+			// ejecutamos la consulta
+			stmt.executeUpdate(createString);
+			System.out.println("");
+			System.out.println("Se ha creado la tabla de usuearios correctamente!");
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		} finally {
+			stmt.close();
+		}
+
+	}
+
+	// Metodo para agregar los usuario
+	private static void agregarusuarios(Connection con, String centreciutat) throws SQLException {
+
+		Statement stmt = null;
+
+		try {
+			stmt = con.createStatement();
+			// Campos de la tabla usuarios
+			// ID, Tipo, Nombre_Usuario, Contraseña
+			stmt.executeUpdate("INSERT INTO usuarios (tipo, nombre_usuario, contrasena) VALUES "
+					+ "('admin', 'admin123', 'admin123')," // Usuario para administrador
+					+ "('usuario', 'usuario123', 'usuario123')," // Usuario para un primer usuario normal
+					+ "('usuario', 'usuario456', 'usuario456')"); // Usuario para un segundo usuario normal
+
+			System.out.println("");
+			System.out.println("Se han agregado los usuarios correctamente!");
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		} finally {
+			stmt.close();
 		}
 	}
 
