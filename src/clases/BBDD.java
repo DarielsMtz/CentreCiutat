@@ -20,22 +20,22 @@ public class BBDD {
 		crearTablaUsuarios(con, "centreciuata");
 
 		// Metodo para agregar los usuarios
-		agregarusuarios(con, "centreciutat");
+		agregarUsuarios(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla plaza
 		// Solo se ejecutara una vez!
-		// crearTablaPlazas(con, "centreciutat");
+		 crearTablaPlazas(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla clientes
 		// Solo se ejecutara una vez!
-		// crearTablaCliente(con, "centreciutat");
+		 crearTablaCliente(con, "centreciutat");
 
 		// Metodo para crear la tabla Vehiculo
 		// Solo se ejecutara una vez!
-		// crearTablaVehiculo(con, "centreciutat");
+		 crearTablaVehiculo(con, "centreciutat");
 
 		// Metodo para obtener las plaza
-		// obtenerPlazas(con, "centreciutat");
+		 obtenerPlazas(con, "centreciutat");
 
 	}
 
@@ -185,7 +185,7 @@ public class BBDD {
 	}
 
 	// Metodo para agregar los usuario
-	private static void agregarusuarios(Connection con, String centreciutat) throws SQLException {
+	private static void agregarUsuarios(Connection con, String centreciutat) throws SQLException {
 
 		Statement stmt = null;
 
