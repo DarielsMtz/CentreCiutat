@@ -107,7 +107,9 @@ public class MenuInicioSesion {
 		}
 		return scanner.nextInt();
 	}
+	
 	public static void BienAdmin() {
+		
         Scanner input = new Scanner(System.in);
         int opcion;
 
@@ -115,15 +117,24 @@ public class MenuInicioSesion {
         	System.out.println("=================================");
     		System.out.println("===== Centre Ciutat Parking =====");
     		System.out.println("=================================");
+
     		System.out.println("");
     		System.out.println("Bienvenido admin (elige una opción)");
+
     		System.out.println(" ");
-            System.out.println("MENU DE OPCIONES");
-            System.out.println("1. Alquilar plazas");
-            System.out.println("2. Editar plazas");
-            System.out.println("3. Eliminar plazas");
-            System.out.println("4. Listado de plazas");
-            System.out.println("0. Salir");
+    		System.out.println("---------------------------------");
+    		System.out.println("---     Bienvenido admin      ---");
+    		System.out.println("---------------------------------");
+
+    		System.out.println(" ");
+    		System.out.println("---------------------------------");
+    		System.out.println("|     1. Alquilar plazas        |");
+    		System.out.println("|     2. Editar plazas          |");
+    		System.out.println("|     3. Eliminar plazas        |");
+    		System.out.println("|     4. Listar plazas          |");
+    		System.out.println("---------------------------------");
+    		System.out.println("---------------------------------");
+    		System.out.println(" ");
             System.out.print("Ingrese su opción: ");
             opcion = input.nextInt();
 
@@ -132,13 +143,13 @@ public class MenuInicioSesion {
                     alquilarPlazas();
                     break;
                 case 2:
-                    //editarPlazas();
+                    editarPlazas();
                     break;
                 case 3:
-                    //eliminarPlazas();
+                    eliminarPlazas();
                     break;
                 case 4:
-                    //listarPlazas();
+                    listarPlazas();
                     break;
                 case 0:
                     System.out.println("Saliendo del programa...");
