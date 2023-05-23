@@ -1,10 +1,77 @@
 package clases;
 
+import java.nio.file.*;
 import java.sql.*;
 import java.util.Scanner;
 
 public class MenuInicioSesion {
+	
+	public static void main(String[] args) {
 
+		// Generar DB a partir de script si no existe
+		 if (!detectarDB()) {
+	            crearDB();
+	        }
+		
+		// Conectar con DB
+		MenuInicioSesion menu = new MenuInicioSesion();
+		menu.mostrarMenu();
+
+	}
+	
+	// Método para crear/generar DB a partir de un script
+	public static void crearDB() {
+		// Conexión con el archivo .sql
+		String url = "jdbc:mysql://localhost:3306/?user=root&password=";
+
+		// Establecer conexión
+		try (Connection con = DriverManager.getConnection(url);
+			 Statement stmt = con.createStatement()) {
+
+			// Seleccionar archivo .sql
+			String script = new String(Files.readAllBytes(Paths.get("db/centreciutat_1.sql")));
+
+			// Ejecutar script
+			executeSqlScript(stmt, script);
+
+			System.out.println("Creación completada!\n");
+
+		} catch (Exception e) {
+			System.out.println("Error al generar la base de datos: " + e.getMessage());
+		}
+		
+	}
+
+	// Método necesario para el script que genera la BD
+	public static void executeSqlScript(Statement statement, String sqlScript) {
+		try (Scanner scanner = new Scanner(sqlScript)) {
+			scanner.useDelimiter("(;(\r)?\n)|(--\n)");
+			while (scanner.hasNext()) {
+				String line = scanner.next();
+				if (line.trim().length() > 0) {
+					statement.execute(line);
+				}
+			}
+
+			System.out.println("Generando base de datos...");
+
+		} catch (Exception e) {
+			System.out.println("Error al generar la base de datos: " + e.getMessage());
+		}
+	}
+
+	// Método para detectar si ya existe la BD
+    public static boolean detectarDB() {
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
+             Statement stmt = con.createStatement()) {
+            ResultSet res = stmt.executeQuery("SHOW DATABASES LIKE 'centreciutat'");
+            return res.next();
+        } catch (SQLException e) {
+            System.out.println("Error al verificar la existencia de la base de datos: " + e.getMessage());
+        }
+        return false;
+    }
+	
 	private Connection connection;
 
 	public MenuInicioSesion() {
@@ -279,8 +346,5 @@ public class MenuInicioSesion {
 	        // Código para listar plazas
 	    }
 	 
-	public static void main(String[] args) {
-		MenuInicioSesion menu = new MenuInicioSesion();
-		menu.mostrarMenu();
-	}
+
 }
