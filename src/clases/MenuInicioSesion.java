@@ -12,6 +12,7 @@ public class MenuInicioSesion {
 		// Establecer conexión con la base de datos
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
+			System.out.println("Se ha establecido la conexcion a la BBDD correctamente!");
 		} catch (SQLException e) {
 			System.out.println("Error al conectar con la base de datos: " + e.getMessage());
 			System.exit(0);
@@ -68,7 +69,7 @@ public class MenuInicioSesion {
 
 			switch (opcion) {
 			case 1:
-				login = iniciarSesion("administrador");
+				login = iniciarSesion("admin");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como administrador.");
 					// TODO Metodo mostrarMenuAdministrador();

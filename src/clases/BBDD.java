@@ -17,25 +17,25 @@ public class BBDD {
 
 		// Metodo para crear la tabla Usuarios
 		// Solo se ejecutara una vez!
-		// crearTablaUsuarios(con, "centreciuata");
+		 crearTablaUsuarios(con, "centreciuata");
 
 		// Metodo para agregar los usuarios
-		// agregarUsuarios(con, "centreciutat");
+		 agregarUsuarios(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla plaza
 		// Solo se ejecutara una vez!
-		// crearTablaPlazas(con, "centreciutat");
+		 crearTablaPlazas(con, "centreciutat");
 
 		// Metodo para la creacion de la tabla clientes
 		// Solo se ejecutara una vez!
-		// crearTablaCliente(con, "centreciutat");
+		 crearTablaCliente(con, "centreciutat");
 
 		// Metodo para crear la tabla Vehiculo
 		// Solo se ejecutara una vez!
-		// crearTablaVehiculo(con, "centreciutat");
+		 crearTablaVehiculo(con, "centreciutat");
 
 		// Metodo para obtener las plaza
-		// obtenerPlazas(con, "centreciutat");
+		 obtenerPlazas(con, "centreciutat");
 
 	}
 
