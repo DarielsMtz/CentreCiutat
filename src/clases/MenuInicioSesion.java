@@ -165,7 +165,7 @@ public class MenuInicioSesion {
 	//Metodo de interfaz de alquiler de plazas
 	public static void alquilarPlazas() {
 		
-    	Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
     	System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
