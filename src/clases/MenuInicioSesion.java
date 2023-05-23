@@ -258,6 +258,10 @@ public class MenuInicioSesion {
 		System.out.println("Precio mensual");
 		System.out.println(" ");
 	}
+	public static void eliminarPlazas() {
+        System.out.println("Opción: Eliminar plazas");
+        // Código para eliminar plazas
+    }
 	public static void main(String[] args) {
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
