@@ -72,7 +72,8 @@ public class MenuInicioSesion {
 				login = iniciarSesion("admin");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como administrador.");
-					// TODO Metodo mostrarMenuAdministrador();
+					 BienAdmin();
+					 
 				} else {
 					System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
 					System.out.println("");
@@ -106,7 +107,50 @@ public class MenuInicioSesion {
 		}
 		return scanner.nextInt();
 	}
+	public static void BienAdmin() {
+        Scanner input = new Scanner(System.in);
+        int opcion;
 
+        do {
+        	System.out.println("=================================");
+    		System.out.println("===== Centre Ciutat Parking =====");
+    		System.out.println("=================================");
+    		System.out.println(" ");
+    		System.out.println("Bienvenido admin (elige una opción)");
+    		System.out.println(" ");
+            System.out.println("MENU DE OPCIONES");
+            System.out.println("1. Alquilar plazas");
+            System.out.println("2. Editar plazas");
+            System.out.println("3. Eliminar plazas");
+            System.out.println("4. Listado de plazas");
+            System.out.println("0. Salir");
+            System.out.print("Ingrese su opción: ");
+            opcion = input.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    //alquilarPlazas();
+                    break;
+                case 2:
+                    //editarPlazas();
+                    break;
+                case 3:
+                    //eliminarPlazas();
+                    break;
+                case 4:
+                    //listarPlazas();
+                    break;
+                case 0:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Por favor, seleccione una opción correcta.");
+                    break;
+            }
+        } while (opcion != 0);
+
+        input.close();
+    }
 	public static void main(String[] args) {
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
