@@ -129,7 +129,7 @@ public class MenuInicioSesion {
 
             switch (opcion) {
                 case 1:
-                    //alquilarPlazas();
+                    alquilarPlazas();
                     break;
                 case 2:
                     //editarPlazas();
@@ -150,6 +150,48 @@ public class MenuInicioSesion {
         } while (opcion != 0);
 
         input.close();
+    }
+	public static void alquilarPlazas() {
+    	Scanner in = new Scanner(System.in);
+    	System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Alquilar plazas");
+		System.out.println("Información Cliente");
+		System.out.println(" ");
+		System.out.print("Nombre: ");
+		String nombre = in.next();
+		System.out.print("Apellido: ");
+		String Apellido = in.next();
+		System.out.print("DNI: ");
+		String DNI= in.next();
+		System.out.print("Dirección: ");
+		String Dirección = in.next();
+		System.out.print("Cuenta Corriente: ");
+		String CuentaCorriente = in.next();
+		System.out.println(" ");
+		System.out.println(" ");
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Alquilar plazas");
+		System.out.println("Información Coche");
+		System.out.println(" ");
+		System.out.print("Marca: ");
+		String marca = in.next();
+		System.out.print("Modelo: ");
+		String modelo = in.next();
+		System.out.print("Tipo de vehiculo: ");
+		String Tvehiculo= in.next();
+		System.out.print("Matricula: ");
+		String matricula = in.next();
+		System.out.print("Motor: ");
+		String motor = in.next();
+		System.out.println("Color: ");
+		String color = in.next();
+		System.out.println(" ");
     }
 	public static void BienUser() {
 		System.out.println("=================================");
