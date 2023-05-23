@@ -151,6 +151,28 @@ public class MenuInicioSesion {
 
         input.close();
     }
+	public static void BienUser() {
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Bienvenido  Usuario");
+		System.out.println(" ");
+		System.out.println("Porfavor, introduzca su matricula o DNI");
+		System.out.println(" ");
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Bienvenido  Usuario");
+		System.out.println(" ");
+		System.out.println("Plaza");
+		System.out.println(" ");
+		System.out.println("m2");
+		System.out.println(" ");
+		System.out.println("Precio mensual");
+		System.out.println(" ");
+	}
 	public static void main(String[] args) {
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
