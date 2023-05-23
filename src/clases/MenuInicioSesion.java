@@ -262,6 +262,11 @@ public class MenuInicioSesion {
         System.out.println("Opción: Eliminar plazas");
         // Código para eliminar plazas
     }
+	 public static void listarPlazas() {
+	        System.out.println("Opción: Listado de plazas");
+	        // Código para listar plazas
+	    }
+	 
 	public static void main(String[] args) {
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
