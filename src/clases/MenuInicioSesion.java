@@ -193,6 +193,49 @@ public class MenuInicioSesion {
 		String color = in.next();
 		System.out.println(" ");
     }
+	public static void editarPlazas() {
+        System.out.println("Opción: Editar plazas");
+        Scanner in = new Scanner(System.in);
+    	System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Editar plazas");
+		System.out.println("Información Cliente");
+		System.out.println(" ");
+		System.out.print("Nombre: ");
+		String nombre = in.next();
+		System.out.print("Apellido: ");
+		String Apellido = in.next();
+		System.out.print("DNI: ");
+		String DNI= in.next();
+		System.out.print("Dirección: ");
+		String Dirección = in.next();
+		System.out.print("Cuenta Corriente: ");
+		String CuentaCorriente = in.next();
+		System.out.println(" ");
+		System.out.println(" ");
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println(" ");
+		System.out.println("Editar plazas");
+		System.out.println("Información Coche");
+		System.out.println(" ");
+		System.out.print("Marca: ");
+		String marca = in.next();
+		System.out.print("Modelo: ");
+		String modelo = in.next();
+		System.out.print("Tipo de vehiculo: ");
+		String Tvehiculo= in.next();
+		System.out.print("Matricula: ");
+		String matricula = in.next();
+		System.out.print("Motor: ");
+		String motor = in.next();
+		System.out.println("Color: ");
+		String color = in.next();
+		System.out.println(" ");
+    }
 	public static void BienUser() {
 		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
