@@ -128,7 +128,7 @@ public class BBDD {
 			// Iteramos sobre los resultados
 			while (rs.next()) {
 				int idPlaza = rs.getInt("id_plaza");
-				boolean estado = rs.getBoolean("estado");
+				boolean estado = rs.getBoolean("estado");	
 				String tamaño = rs.getString("tamaño");
 				int numeroPlaza = rs.getInt("numero_plaza");
 				double precio = rs.getDouble("precio");
