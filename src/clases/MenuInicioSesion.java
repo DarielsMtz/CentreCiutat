@@ -200,7 +200,6 @@ public class MenuInicioSesion {
     	System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
-		System.out.println(" ");
 		System.out.println("---------------------------------");
 		System.out.println("---      Alquilar plazas      ---");
 		System.out.println("---   Información Cliente     ---");
@@ -226,7 +225,6 @@ public class MenuInicioSesion {
 		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
-		System.out.println(" ");
 		System.out.println("---------------------------------");
 		System.out.println("---      Alquilar plazas      ---");
 		System.out.println("---     Información Coche     ---");
@@ -258,7 +256,6 @@ public class MenuInicioSesion {
     	System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
-		System.out.println("");
 		System.out.println("---------------------------------");
 		System.out.println("---       Editar plazas       ---");
 		System.out.println("---    Información Cliente    ---");
@@ -343,14 +340,14 @@ public class MenuInicioSesion {
 	}
 	
 	public static void menuAdmin() {
+		System.out.println("");
 		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
-		System.out.println(" ");
 		System.out.println("---------------------------------");
 		System.out.println("---     Bienvenido admin      ---");
 		System.out.println("---------------------------------");
-		System.out.println(" ");
+		System.out.println("");
 		System.out.println("---------------------------------");
 		System.out.println("|     1. Alquilar plazas        |");
 		System.out.println("|     2. Editar plazas          |");
