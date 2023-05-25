@@ -44,7 +44,7 @@ public class BBDD {
 
 		String createString = "CREATE TABLE " + centreciutat + ".plazas_estacionamiento ("
 				+ "id_plaza INT PRIMARY KEY AUTO_INCREMENT," + "estado BOOLEAN," + "tamaño VARCHAR(50),"
-				+ "numero_plaza INT," + " precio DOUBLE" + ")";
+				+ "numero_plaza VARCHAR(10)," + " precio DOUBLE" + ")";
 
 		Statement stmt = null;
 		try {
