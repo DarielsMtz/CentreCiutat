@@ -5,28 +5,27 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class MenuInicioSesion {
-	
+
 	public static void main(String[] args) {
 
 		// Generar DB a partir de script si no existe
-		 if (!detectarDB()) {
-	            crearDB();
-	        }
-		
+		if (!detectarDB()) {
+			crearDB();
+		}
+
 		// Conectar con DB
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
 
 	}
-	
+
 	// Método para crear/generar DB a partir de un script
 	public static void crearDB() {
 		// Conexión con el archivo .sql
 		String url = "jdbc:mysql://localhost:3306/?user=root&password=";
 
 		// Establecer conexión
-		try (Connection con = DriverManager.getConnection(url);
-			 Statement stmt = con.createStatement()) {
+		try (Connection con = DriverManager.getConnection(url); Statement stmt = con.createStatement()) {
 
 			// Seleccionar archivo .sql
 			String script = new String(Files.readAllBytes(Paths.get("db/centreciutat_1.sql")));
@@ -39,7 +38,7 @@ public class MenuInicioSesion {
 		} catch (Exception e) {
 			System.out.println("Error al generar la base de datos: " + e.getMessage());
 		}
-		
+
 	}
 
 	// Método necesario para el script que genera la BD
@@ -61,17 +60,17 @@ public class MenuInicioSesion {
 	}
 
 	// Método para detectar si ya existe la BD
-    public static boolean detectarDB() {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
-             Statement stmt = con.createStatement()) {
-            ResultSet res = stmt.executeQuery("SHOW DATABASES LIKE 'centreciutat'");
-            return res.next();
-        } catch (SQLException e) {
-            System.out.println("Error al verificar la existencia de la base de datos: " + e.getMessage());
-        }
-        return false;
-    }
-	
+	public static boolean detectarDB() {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
+				Statement stmt = con.createStatement()) {
+			ResultSet res = stmt.executeQuery("SHOW DATABASES LIKE 'centreciutat'");
+			return res.next();
+		} catch (SQLException e) {
+			System.out.println("Error al verificar la existencia de la base de datos: " + e.getMessage());
+		}
+		return false;
+	}
+
 	private Connection connection;
 
 	public MenuInicioSesion() {
@@ -86,6 +85,7 @@ public class MenuInicioSesion {
 		}
 	}
 
+	// Metodo para la verificacion de usuarios
 	public boolean iniciarSesion(String tipoUsuario) {
 		Scanner scanner = new Scanner(System.in);
 
@@ -115,11 +115,12 @@ public class MenuInicioSesion {
 		return false;
 	}
 
+	// Metodo para mostros el menu principal
 	public void mostrarMenu() {
 		boolean login = false;
 		do {
 			menuSesion(); // Se hace un llamado al menu de inicio de sesion
-			
+
 			int opcion = obtenerNumero();
 
 			switch (opcion) {
@@ -127,9 +128,9 @@ public class MenuInicioSesion {
 				login = iniciarSesion("admin");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como administrador.");
-					
-					 BienAdmin(); // Metodo para las acciones del admin
-					 
+
+					BienAdmin(); // Metodo para las acciones del admin
+
 				} else {
 					System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
 					System.out.println("");
@@ -155,6 +156,7 @@ public class MenuInicioSesion {
 		} while (!login);
 	}
 
+// Metodo para leer las opcines del teclado
 	private int obtenerNumero() {
 		Scanner scanner = new Scanner(System.in);
 		while (!scanner.hasNextInt()) {
@@ -163,41 +165,45 @@ public class MenuInicioSesion {
 		}
 		return scanner.nextInt();
 	}
+
+	// Metodo para las opcion del administrador
 	public static void BienAdmin() {
-        Scanner input = new Scanner(System.in);
-        int opcion;
+		Scanner input = new Scanner(System.in);
+		int opcion;
 
-        do {
-        	menuAdmin();  // Se hace un llamado al menu del administrador
-            opcion = input.nextInt();
+		do {
+			menuAdmin(); // Se hace un llamado al menu del administrador
+			opcion = input.nextInt();
 
-            switch (opcion) {
-                case 1:
-                    alquilarPlazas();
-                    break;
-                case 2:
-                    editarPlazas();
-                    break;
-                case 3:
-                    eliminarPlazas();
-                    break;
-                case 4:
-                    listarPlazas();
-                    break;
-                case 0:
-                    System.out.println("Saliendo del programa...");
-                    break;
-                default:
-                    System.out.println("Opción inválida. Por favor, seleccione una opción correcta.");
-                    break;
-            }
-        } while (opcion != 0);
+			switch (opcion) {
+			case 1:
+				alquilarPlazas();
+				break;
+			case 2:
+				editarPlazas();
+				break;
+			case 3:
+				eliminarPlazas();
+				break;
+			case 4:
+				listarPlazas();
+				break;
+			case 0:
+				System.out.println("Saliendo del programa...");
+				break;
+			default:
+				System.out.println("Opción inválida. Por favor, seleccione una opción correcta.");
+				break;
+			}
+		} while (opcion != 0);
 
-        input.close();
-    }
+		input.close();
+	}
+
+	// Metodo para llevar acabo un alquiler
 	public static void alquilarPlazas() {
-    	Scanner in = new Scanner(System.in);
-    	System.out.println("=================================");
+		Scanner in = new Scanner(System.in);
+		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
 		System.out.println("---------------------------------");
@@ -205,52 +211,53 @@ public class MenuInicioSesion {
 		System.out.println("---   Información Cliente     ---");
 		System.out.println("---------------------------------");
 		System.out.println("");
-		
+
 		System.out.print("Nombre: ");
 		String nombre = in.next();
-		
+
 		System.out.print("Apellido: ");
 		String apellido = in.next();
-		
+
 		System.out.print("DNI: ");
-		String dni= in.next();
-		
+		String dni = in.next();
+
 		System.out.print("Dirección: ");
 		String dirección = in.next();
-		
+
 		System.out.print("Cuenta Corriente: ");
 		String cuentacorriente = in.next();
-		
+
 		System.out.println("");
 		System.out.println("---------------------------------");
-		System.out.println("---      Alquilar plazas      ---");
 		System.out.println("---     Información Coche     ---");
 		System.out.println("---------------------------------");
 		System.out.println("");
 		System.out.print("Marca: ");
 		String marca = in.next();
-		
+
 		System.out.print("Modelo: ");
 		String modelo = in.next();
-		
+
 		System.out.print("Tipo de vehiculo: ");
-		String tipovehiculo= in.next();
-		
+		String tipovehiculo = in.next();
+
 		System.out.print("Matricula: ");
 		String matricula = in.next();
-		
+
 		System.out.print("Motor: ");
 		String motor = in.next();
-		
+
 		System.out.print("Color: ");
 		String color = in.next();
 		System.out.println("");
 		System.out.println("Alquiler confirmado!");
-    }
+	}
+
+	// Metodo para editar las plazas
 	public static void editarPlazas() {
-        System.out.println("Opción: Editar plazas");
-        Scanner sc = new Scanner(System.in);
-    	System.out.println("=================================");
+		Scanner sc = new Scanner(System.in);
+		System.out.println("");
+		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
 		System.out.println("---------------------------------");
@@ -260,65 +267,48 @@ public class MenuInicioSesion {
 		System.out.println("");
 		System.out.print("Nombre: ");
 		String nombre = sc.next();
-		
+
 		System.out.print("Apellido: ");
 		String apellido = sc.next();
-		
+
 		System.out.print("DNI: ");
-		String dni= sc.next();
-		
+		String dni = sc.next();
+
 		System.out.print("Dirección: ");
 		String dirección = sc.next();
-		
+
 		System.out.print("Cuenta Corriente: ");
 		String cuentacorriente = sc.next();
-		
+
 		System.out.println("");
 		System.out.println("---------------------------------");
 		System.out.println("---       Editar plazas       ---");
 		System.out.println("---     Información Coche     ---");
 		System.out.println("---------------------------------");
 		System.out.println("");
-		
+
 		System.out.print("Marca: ");
 		String marca = sc.next();
-		
+
 		System.out.print("Modelo: ");
 		String modelo = sc.next();
-		
+
 		System.out.print("Tipo de vehiculo: ");
-		String tipovehiculo= sc.next();
-		
+		String tipovehiculo = sc.next();
+
 		System.out.print("Matricula: ");
 		String matricula = sc.next();
-		
+
 		System.out.print("Motor: ");
 		String motor = sc.next();
-		
+
 		System.out.print("Color: ");
 		String color = sc.next();
 		System.out.println("");
 		System.out.println("Se han gurdodo los cambion correctamente!");
-    }
-	public static void BienUser() {
-		System.out.println("=================================");
-		System.out.println("===== Centre Ciutat Parking =====");
-		System.out.println("=================================");
-		System.out.println("");
-		System.out.println("---------------------------------");
-		System.out.println("---    Bienvenido  Usuario    ---");
-		System.out.println("---------------------------------");
-		System.out.println("");
-		System.out.println("Porfavor, introduzca su matricula o DNI");
-		System.out.println("");
-		System.out.println("Plaza: ");
-		System.out.println("");
-		System.out.println("m2: ");
-		System.out.println("");
-		System.out.println("Precio mensual: ");
-		System.out.println("");
 	}
-	
+
+	// Metodo del menu de inicio de sesion
 	public void menuSesion() {
 		System.out.println("");
 		System.out.println("================================");
@@ -335,7 +325,8 @@ public class MenuInicioSesion {
 		System.out.println("");
 		System.out.print("- Ingrese una opción:-\n");
 	}
-	
+
+	// Metodo del menu de admin
 	public static void menuAdmin() {
 		System.out.println("");
 		System.out.println("=================================");
@@ -352,16 +343,37 @@ public class MenuInicioSesion {
 		System.out.println("|     4. Listar plazas          |");
 		System.out.println("---------------------------------");
 		System.out.println(" ");
-        System.out.print("-Ingrese su opción:\n");
+		System.out.print("-Ingrese su opción:\n");
 	}
+
+	// Metodo del muno de usuario
+	public static void BienUser() {
+		System.out.println("");
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println("---------------------------------");
+		System.out.println("---    Bienvenido  Usuario    ---");
+		System.out.println("---------------------------------");
+		System.out.println("");
+		System.out.println("Porfavor, introduzca su matricula o DNI");
+		System.out.println("");
+		System.out.println("Plaza: ");
+		System.out.println("");
+		System.out.println("m2: ");
+		System.out.println("");
+		System.out.println("Precio mensual: ");
+		System.out.println("");
+	}
+
 	public static void eliminarPlazas() {
-        System.out.println("Opción: Eliminar plazas");
-        // Código para eliminar plazas
-    }
-	 public static void listarPlazas() {
-	        System.out.println("Opción: Listado de plazas");
-	        // Código para listar plazas
-	    }
-	 
+		System.out.println("Opción: Eliminar plazas");
+		// Código para eliminar plazas
+	}
+
+	public static void listarPlazas() {
+		System.out.println("Opción: Listado de plazas");
+		// Código para listar plazas
+	}
 
 }
