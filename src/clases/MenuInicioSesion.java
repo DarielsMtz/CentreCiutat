@@ -222,9 +222,6 @@ public class MenuInicioSesion {
 		String cuentacorriente = in.next();
 		
 		System.out.println("");
-		System.out.println("=================================");
-		System.out.println("===== Centre Ciutat Parking =====");
-		System.out.println("=================================");
 		System.out.println("---------------------------------");
 		System.out.println("---      Alquilar plazas      ---");
 		System.out.println("---     Información Coche     ---");
