@@ -253,6 +253,4 @@ public class BBDD {
 						stmt.close();
 					}
 				}
-		
-		
 }
