@@ -98,8 +98,8 @@ public class BBDD {
 		            + "dni VARCHAR(50) NOT NULL,"
 		            + "direccion VARCHAR(50) NOT NULL,"
 		            + "cuenta_corriente VARCHAR(50) NOT NULL,"
-		            + "id_plaza INT,"
-		            + "id_vehiculo INT,"
+		            + "id_plaza INT NOT NULL,"
+		            + "id_vehiculo INT NOT NULL,"
 		            + "FOREIGN KEY (id_plaza) REFERENCES plazas(id_plaza),"
 		            + "FOREIGN KEY (id_vehiculo) REFERENCES vehiculo(id_vehiculo)"
 		            + ")";
