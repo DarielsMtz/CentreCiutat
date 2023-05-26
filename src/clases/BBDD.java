@@ -8,16 +8,20 @@ import java.sql.Statement;
 
 public class BBDD {
 
+	private static final String URL = "jdbc:mysql://localhost:3306/centreciutat";
+    private static final String DB_NAME = "centreciutat";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "";
 	// Método main para probar la conexión y los métodos
 	public static void main(String[] args) throws SQLException {
 
 		// Creamos la conexion a la base de datos
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
+		Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		System.out.println("Conexcion establecida correctamente!");
 
 		// Metodo para crear la tabla Usuarios
 		// Solo se ejecutara una vez!
-		 crearTablaUsuarios(con, "centreciuata");
+		 crearTablaUsuarios(con, "centreciuat");
 
 		// Metodo para agregar los usuarios
 		 agregarUsuarios(con, "centreciutat");
