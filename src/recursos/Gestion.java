@@ -1,7 +1,8 @@
 package recursos;
 
+import java.io.*;
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Gestion {
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/centreciutat";
@@ -10,180 +11,609 @@ public class Gestion {
 
 	private static Connection connection;
 	
+
+	public static void main(String[] args) {
+		BBDD.ejectutarMetodos();
+	}
+
 	// CONSULTAS
-	
-	private static int insertarCliente(String nombre, String apellido, String dni, String direccion, String cuentaCorriente) throws SQLException {
-        String sql = "INSERT INTO clientes (nombre, apellido, dni, direccion, cuenta_corriente) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-        statement.setString(1, nombre);
-        statement.setString(2, apellido);
-        statement.setString(3, dni);
-        statement.setString(4, direccion);
-        statement.setString(5, cuentaCorriente);
-        statement.executeUpdate();
 
-        ResultSet generatedKeys = statement.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            return generatedKeys.getInt(1);
-        } else {
-            return -1;
-        }
-    }
+	private static int insertarCliente(String nombre, String apellido, String dni, String direccion,
+			String cuentaCorriente) throws SQLException {
+		String sql = "INSERT INTO clientes (nombre, apellido, dni, direccion, cuenta_corriente) VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+		statement.setString(1, nombre);
+		statement.setString(2, apellido);
+		statement.setString(3, dni);
+		statement.setString(4, direccion);
+		statement.setString(5, cuentaCorriente);
+		statement.executeUpdate();
 
-    private static int insertarVehiculo(String marca, String modelo, String color, String motor, String matricula, String  tipo) throws SQLException {
-        String sql = "INSERT INTO vehiculo (marca, modelo, color, motor, matricula, tipo) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-        statement.setString(1, marca);
-        statement.setString(2, modelo);
-        statement.setString(3, color);
-        statement.setString(4, motor);
-        statement.setString(5, matricula);
-        statement.setString(6, tipo);
-        statement.executeUpdate();
+		ResultSet generatedKeys = statement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			return generatedKeys.getInt(1);
+		} else {
+			return -1;
+		}
+	}
 
-        ResultSet generatedKeys = statement.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            return generatedKeys.getInt(1);
-        } else {
-            return -1;
-        }
-    }
+	private static int insertarVehiculo(String marca, String modelo, String color, String motor, String matricula,
+			String tipo) throws SQLException {
+		String sql = "INSERT INTO vehiculo (marca, modelo, color, motor, matricula, tipo) VALUES (?, ?, ?, ?, ?, ?)";
+		PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+		statement.setString(1, marca);
+		statement.setString(2, modelo);
+		statement.setString(3, color);
+		statement.setString(4, motor);
+		statement.setString(5, matricula);
+		statement.setString(6, tipo);
+		statement.executeUpdate();
 
-    private static void mostrarPlazasDisponibles() throws SQLException {
-        String sql = "SELECT numero_plaza FROM plazas_estacionamiento WHERE disponible = true";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
+		ResultSet generatedKeys = statement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			return generatedKeys.getInt(1);
+		} else {
+			return -1;
+		}
+	}
 
-        while (resultSet.next()) {
-            int numeroPlaza = resultSet.getInt("numero_plaza");
-            System.out.println(numeroPlaza);
-        }
-    }
+	private static boolean verificarPlazaDisponible(String numeroPlaza) throws SQLException {
+		String sql = "SELECT disponible FROM plazas WHERE numero_plaza = ?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, numeroPlaza);
+		ResultSet resultSet = statement.executeQuery();
 
-    private static boolean verificarPlazaDisponible(int numeroPlaza) throws SQLException {
-        String sql = "SELECT disponible FROM plazas_estacionamiento WHERE numero_plaza = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, numeroPlaza);
-        ResultSet resultSet = statement.executeQuery();
+		if (resultSet.next()) {
+			return resultSet.getBoolean("disponible");
+		} else {
+			return false;
+		}
+	}
 
-        if (resultSet.next()) {
-            return resultSet.getBoolean("disponible");
-        } else {
-            return false;
-        }
-    }
-    
-    // METODOS
-    
+	private static void mostrarPlazasDisponibles() throws SQLException {
+		String sql = "SELECT numero_plaza FROM plazas WHERE disponible = true";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultSet = statement.executeQuery();
+
+		while (resultSet.next()) {
+			String numeroPlaza = resultSet.getString("numero_plaza");
+			System.out.println(numeroPlaza);
+		}
+	}
+
+	// Método para actualizar el estado de disponibilidad de una plaza en la base de datos
+	private static void actualizarEstadoPlaza(String numeroPlaza, boolean disponible) throws SQLException {
+		String query = "UPDATE plazas SET Disponible = ? WHERE numero_plaza = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setBoolean(1, disponible);
+			pstmt.setString(2, numeroPlaza);
+			pstmt.executeUpdate();
+		}
+	}
+
+	// Método para vincular un cliente, un vehículo y una plaza en la base de datos
+	private static void vincularClienteVehiculoPlaza(int clienteId, int vehiculoId, String numeroPlaza)
+			throws SQLException {
+		String query = "UPDATE clientes SET id_plaza = (SELECT id_plaza FROM plazas WHERE numero_plaza = ?), id_vehiculo = ? WHERE id_cliente = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, numeroPlaza);
+			pstmt.setInt(2, vehiculoId);
+			pstmt.setInt(3, clienteId);
+			pstmt.executeUpdate();
+		}
+	}
+
+	// Método para actualizar la información del cliente en la base de datos
+	private static void actualizarCliente(int clienteId, String nombre, String apellidos, String dni, String direccion,
+			String cuentaCorriente) throws SQLException {
+		String query = "UPDATE clientes SET nombre = ?, apellido = ?, dni = ?, direccion = ?, cuenta_corriente = ? WHERE id_cliente = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, nombre);
+			pstmt.setString(2, apellidos);
+			pstmt.setString(3, dni);
+			pstmt.setString(4, direccion);
+			pstmt.setString(5, cuentaCorriente);
+			pstmt.setInt(6, clienteId);
+			pstmt.executeUpdate();
+		}
+	}
+
+	// Método para actualizar la información del vehículo en la base de datos
+	private static void actualizarVehiculo(int vehiculoId, String marca, String modelo, String color, String motor,
+			String matricula, String tipo) throws SQLException {
+		String query = "UPDATE vehiculo SET marca = ?, modelo = ?, color = ?, motor = ?, matricula = ?, tipo = ? WHERE id_vehiculo = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, marca);
+			pstmt.setString(2, modelo);
+			pstmt.setString(3, color);
+			pstmt.setString(4, motor);
+			pstmt.setString(5, matricula);
+			pstmt.setString(6, tipo);
+			pstmt.setInt(7, vehiculoId);
+			pstmt.executeUpdate();
+		}
+	}
+
+	// Método para mostrar todas las plazas disponibles	
+	private static void mostrarPlazas() throws SQLException {
+	    String query = "SELECT * FROM plazas";
+	    try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+	        while (rs.next()) {
+	            String numeroPlaza = rs.getString("numero_plaza");
+	            boolean disponible = rs.getBoolean("disponible");
+	            String estado = disponible ? "Disponible" : "Alquilado";
+	            System.out.println("Plaza: " + numeroPlaza + " " + estado);
+	        }
+	    }
+	}
+
+
+	// Método para verificar si una plaza seleccionada existe y está ocupada
+	private static boolean verificarPlazaOcupada(String numeroPlaza) throws SQLException {
+		String query = "SELECT disponible FROM plazas WHERE numero_plaza = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, numeroPlaza);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					boolean disponible = rs.getBoolean("disponible");
+					return !disponible;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Método para obtener el ID del cliente asociado a una plaza
+	private static int obtenerClienteIdPorPlaza(String numeroPlaza) throws SQLException {
+	    String query = "SELECT id_cliente FROM clientes WHERE id_plaza = (SELECT id_plaza FROM plazas WHERE numero_plaza = ?)";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, numeroPlaza);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("id_cliente");
+	            }
+	        }
+	    }
+	    return -1;
+	}
+
+	// Método para obtener el ID del vehículo asociado a una plaza
+	private static int obtenerVehiculoIdPorPlaza(String numeroPlaza) throws SQLException {
+	    String query = "SELECT id_vehiculo FROM clientes WHERE id_plaza = (SELECT id_plaza FROM plazas WHERE numero_plaza = ?)";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, numeroPlaza);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("id_vehiculo");
+	            }
+	        }
+	    }
+	    return -1;
+	}
+
+
+
+	// Método para mostrar la información actual del cliente asociado a una plaza
+	private static void mostrarCliente(String numeroPlaza) throws SQLException {
+	    String query = "SELECT * FROM clientes c JOIN plazas p ON c.id_plaza = p.id_plaza WHERE p.numero_plaza = ?";
+	    System.out.println("Información actual del cliente:");
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, numeroPlaza);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                System.out.println("Nombre: " + rs.getString("nombre"));
+	                System.out.println("Apellidos: " + rs.getString("apellido"));
+	                System.out.println("DNI: " + rs.getString("dni"));
+	                System.out.println("Dirección: " + rs.getString("direccion"));
+	                System.out.println("Cuenta corriente: " + rs.getString("cuenta_corriente"));
+	            } else {
+	                System.out.println("No se encontró información del cliente asociado a la plaza.");
+	            }
+	        }
+	    }
+	}
+
+	// Método para mostrar la información actual del vehículo asociado a una plaza
+	private static void mostrarVehiculo(String numeroPlaza) throws SQLException {
+	    String query = "SELECT * FROM vehiculo v JOIN clientes c ON v.id_vehiculo = c.id_vehiculo JOIN plazas p ON c.id_plaza = p.id_plaza WHERE p.numero_plaza = ?";
+        System.out.println("Información actual del vehículo:");
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, numeroPlaza);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                System.out.println("Marca: " + rs.getString("v.marca"));
+	                System.out.println("Modelo: " + rs.getString("v.modelo"));
+	                System.out.println("Color: " + rs.getString("v.color"));
+	                System.out.println("Motor: " + rs.getString("v.motor"));
+	                System.out.println("Matrícula: " + rs.getString("v.matricula"));
+	                System.out.println("Tipo de vehículo: " + rs.getString("v.tipo"));
+	            } else {
+	                System.out.println("No se encontró información del vehículo asociado a la plaza.");
+	            }
+	        }
+	    }
+	}
+
+
+	// Método para eliminar los registros de cliente y vehículo asociados a una plaza
+	private static void eliminarRegistrosPlaza(String numeroPlaza) {
+	    try {
+	        // Obtener el ID del vehículo asociado a la plaza
+	        int vehiculoId = obtenerVehiculoIdPorPlaza(numeroPlaza);
+
+	        // Eliminar registro de la tabla clientes
+	        String queryClientes = "DELETE FROM clientes WHERE id_plaza = (SELECT id_plaza FROM plazas WHERE numero_plaza = ?)";
+	        try (PreparedStatement pstmtClientes = connection.prepareStatement(queryClientes)) {
+	            pstmtClientes.setString(1, numeroPlaza);
+	            pstmtClientes.executeUpdate();
+	        }
+
+	        if (vehiculoId != -1) {
+	            // Eliminar registro de la tabla vehiculo
+	            String queryVehiculo = "DELETE FROM vehiculo WHERE id_vehiculo = ?";
+	            try (PreparedStatement pstmtVehiculo = connection.prepareStatement(queryVehiculo)) {
+	                pstmtVehiculo.setInt(1, vehiculoId);
+	                pstmtVehiculo.executeUpdate();
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+	private static void guardarInformeComoTXT() {
+	    try {
+	        // Crear un archivo de texto en la ubicación especificada
+	        String rutaArchivo = "C:\\informes\\informe.txt";
+	        BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo));
+
+	        // Escribir el encabezado del informe en el archivo
+	        writer.write("Informes de alquileres actuales y plazas disponibles:");
+	        writer.newLine();
+	        writer.newLine();
+
+	        // Obtener los alquileres actuales y escribirlos en el archivo
+	        writer.write("Alquileres actuales:");
+	        writer.newLine();
+	        writer.newLine();
+
+	        Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+	        String queryAlquiladas = "SELECT p.numero_plaza, p.precio, c.nombre, c.apellido, v.marca, v.modelo "
+	                + "FROM plazas p "
+	                + "JOIN clientes c ON p.id_plaza = c.id_plaza "
+	                + "JOIN vehiculo v ON c.id_vehiculo = v.id_vehiculo";
+
+	        try (Statement stmt = connection.createStatement(); ResultSet rsAlquiladas = stmt.executeQuery(queryAlquiladas)) {
+	            while (rsAlquiladas.next()) {
+	                String numeroPlaza = rsAlquiladas.getString("numero_plaza");
+	                double precio = rsAlquiladas.getDouble("precio");
+	                String nombreCliente = rsAlquiladas.getString("nombre");
+	                String apellidoCliente = rsAlquiladas.getString("apellido");
+	                String marcaVehiculo = rsAlquiladas.getString("marca");
+	                String modeloVehiculo = rsAlquiladas.getString("modelo");
+
+	                String linea = "Plaza: " + numeroPlaza + ", Precio mensual: " + precio + " euros" + ", Cliente: " + nombreCliente + " " + apellidoCliente + ", Vehículo: " + marcaVehiculo + " " + modeloVehiculo;
+	                writer.write(linea);
+	                writer.newLine();
+	            }
+	        }
+
+	        writer.newLine();
+	        writer.newLine();
+
+	        // Obtener las plazas disponibles y escribirlas en el archivo
+	        writer.write("Plazas disponibles:");
+	        writer.newLine();
+	        writer.newLine();
+
+	        String queryDisponibles = "SELECT p.numero_plaza "
+	                + "FROM plazas p "
+	                + "WHERE p.disponible = true";
+
+	        try (Statement stmt = connection.createStatement(); ResultSet rsDisponibles = stmt.executeQuery(queryDisponibles)) {
+	            while (rsDisponibles.next()) {
+	                String numeroPlaza = rsDisponibles.getString("numero_plaza");
+
+	                String linea = "Plaza: " + numeroPlaza;
+	                writer.write(linea);
+	                writer.newLine();
+	            }
+	        }
+
+	        // Cerrar la conexión a la base de datos
+	        connection.close();
+
+	        // Cerrar el archivo
+	        writer.close();
+
+	        System.out.println("Informe guardado exitosamente en " + rutaArchivo);
+	    } catch (SQLException | IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+	// METODOS
+
 	// Método para alquilar plazas
 	public static void alquilarPlaza() {
 		try {
 			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			System.out.println("Conexión establecida correctamente!");
+
+			Scanner teclado = new Scanner(System.in);
+			String nombre, apellidos, dni, direccion, cuentaCorriente, marca, modelo, color, motor, matricula, tipo,
+					numeroPlaza;
+			int clienteId, vehiculoId;
+			boolean plazaDisponible;
+
+			do {
+				System.out.println("Información del cliente:");
+				System.out.print("Nombre: ");
+				nombre = teclado.nextLine();
+			} while (nombre.trim().isEmpty()); // Repetir hasta que se proporcione un nombre válido
+
+			do {
+				System.out.print("Apellidos: ");
+				apellidos = teclado.nextLine();
+			} while (apellidos.trim().isEmpty()); // Repetir hasta que se proporcionen apellidos válidos
+
+			do {
+				System.out.print("DNI: ");
+				dni = teclado.nextLine();
+			} while (dni.trim().isEmpty()); // Repetir hasta que se proporcione un DNI válido
+
+			do {
+				System.out.print("Dirección: ");
+				direccion = teclado.nextLine();
+			} while (direccion.trim().isEmpty()); // Repetir hasta que se proporcione una dirección válida
+
+			do {
+				System.out.print("Cuenta corriente: ");
+				cuentaCorriente = teclado.nextLine();
+			} while (cuentaCorriente.trim().isEmpty()); // Repetir hasta que se proporcione una cuenta corriente válida
+
+			clienteId = insertarCliente(nombre, apellidos, dni, direccion, cuentaCorriente);
+			if (clienteId == -1) {
+				System.out.println("No se pudo insertar el cliente en la base de datos.");
+				return;
+			}
+
+			do {
+				System.out.println("\nInformación del coche:");
+				System.out.print("Marca: ");
+				marca = teclado.nextLine();
+			} while (marca.trim().isEmpty()); // Repetir hasta que se proporcione una marca válida
+
+			do {
+				System.out.print("Modelo: ");
+				modelo = teclado.nextLine();
+			} while (modelo.trim().isEmpty()); // Repetir hasta que se proporcione un modelo válido
+
+			do {
+				System.out.print("Color: ");
+				color = teclado.nextLine();
+			} while (color.trim().isEmpty()); // Repetir hasta que se proporcione un color válido
+
+			do {
+				System.out.print("Motor: ");
+				motor = teclado.nextLine();
+			} while (motor.trim().isEmpty()); // Repetir hasta que se proporcione un motor válido
+
+			do {
+				System.out.print("Matrícula: ");
+				matricula = teclado.nextLine();
+			} while (matricula.trim().isEmpty()); // Repetir hasta que se proporcione una matrícula válida
+
+			do {
+				System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
+				tipo = teclado.nextLine();
+			} while (tipo.trim().isEmpty()); // Repetir hasta que se proporcione un tipo de vehículo válido
+			tipo = tipo.toLowerCase();
+			vehiculoId = insertarVehiculo(marca, modelo, color, motor, matricula, tipo.toLowerCase());
+			if (vehiculoId == -1) {
+				System.out.println("No se pudo insertar el vehículo en la base de datos.");
+				return;
+			}
+
+			System.out.println("Plazas de estacionamiento disponibles:");
+			mostrarPlazasDisponibles();
+
+			do {
+				System.out.print("Seleccione el número de la plaza de estacionamiento: ");
+				numeroPlaza = teclado.nextLine().toUpperCase();
+				plazaDisponible = verificarPlazaDisponible(numeroPlaza);
+				if (!plazaDisponible) {
+					System.out.println("La plaza seleccionada no está disponible.");
+				}
+			} while (!plazaDisponible); // Repetir hasta que se seleccione una plaza disponible
+
+			// Actualizar estado de disponibilidad de la plaza en la base de datos
+			actualizarEstadoPlaza(numeroPlaza, false);
+
+			// Vincular cliente, vehículo y plaza en la base de datos
+			vincularClienteVehiculoPlaza(clienteId, vehiculoId, numeroPlaza);
+
+			System.out.println("\n¡Plaza alquilada con éxito!");
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        System.out.println("Conexión establecida correctamente!");
-		 // Implementamos la clase Scanner
-		
-		// Solicitamos los datos del cliente
-        Scanner teclado = new Scanner(System.in);
-        System.out.println("Información del cliente:");
-        System.out.print("Nombre: ");
-        String nombre = teclado.nextLine();
-        System.out.print("Apellidos: ");
-        String apellidos = teclado.nextLine();
-        System.out.print("DNI: ");
-        String dni = teclado.nextLine();
-        System.out.print("Dirección: ");
-        String direccion = teclado.nextLine();
-        System.out.print("Cuenta corriente: ");
-        String cuentaCorriente = teclado.nextLine();
+	}
 
-        // Creamos un objeto del tipo Inquilino para guardar su información en la base de datos (aún no implementado la generación de usuario y contraseña)
-        int clienteId = 0;
-		try {
-			clienteId = insertarCliente(nombre, apellidos, dni, direccion, cuentaCorriente);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        if (clienteId == -1) {
-            System.out.println("No se pudo insertar el cliente en la base de datos.");
-            return;
-        }
-        // Solicitamos los datos del coche
-        System.out.println("\nInformación del coche:");
-        System.out.println("Marca: ");
-        String marca = teclado.nextLine();
-        System.out.print("Modelo: ");
-        String modelo = teclado.nextLine();
-        System.out.print("Color: ");
-        String color = teclado.nextLine();
-        System.out.print("Motor: ");
-        String motor = teclado.nextLine();
-        System.out.print("Matrícula: ");
-        String matricula = teclado.nextLine();
-        System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
-        String tipo = teclado.nextLine();
-
-        // Creamos un objeto del tipo vehiculo para guardar su información
-        int vehiculoId = 0;
-		try {
-			vehiculoId = insertarVehiculo(marca, modelo, color, motor, matricula, tipo);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        if (vehiculoId == -1) {
-            System.out.println("No se pudo insertar el vehículo en la base de datos.");
-            return;
-        }
-        
-        System.out.println("Plazas de estacionamiento disponibles:");
-        try {
-			mostrarPlazasDisponibles();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        // Solicitar número de plaza
-        System.out.print("Seleccione el número de la plaza de estacionamiento: ");
-        int numeroPlaza = teclado.nextInt();
-
-        // Verificar disponibilidad de la plaza seleccionada
-        boolean plazaDisponible = false;
-		try {
-			plazaDisponible = verificarPlazaDisponible(numeroPlaza);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        if (!plazaDisponible) {
-            System.out.println("La plaza seleccionada no está disponible.");
-            return;
-        }
-        System.out.println("\n¡Plaza alquilada con éxito!");
-    }
-	
-	
 	// Método para editar plazas
 	public static void editarPlaza() {
-		
+		try {
+			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			System.out.println("Conexión establecida correctamente!");
+
+			Scanner teclado = new Scanner(System.in);
+
+			System.out.println("Plazas de estacionamiento:");
+			mostrarPlazas(); // Mostrar todas las plazas disponibles
+
+			System.out.print("Seleccione el número de la plaza que desea editar: ");
+			String numeroPlaza = teclado.nextLine().toUpperCase();
+
+			// Verificar si la plaza seleccionada existe y está ocupada
+			if (!verificarPlazaOcupada(numeroPlaza)) {
+				System.out.println("La plaza seleccionada no existe o no está ocupada.");
+				return;
+			}
+
+			// Obtener la información actual del cliente y vehículo asociados a la plaza
+			int clienteId = obtenerClienteIdPorPlaza(numeroPlaza);
+			int vehiculoId = obtenerVehiculoIdPorPlaza(numeroPlaza);
+
+			mostrarCliente(numeroPlaza);
+
+			mostrarVehiculo(numeroPlaza);
+			System.out.println("clienteId: " + clienteId);
+			System.out.println("vehiculoId: " + vehiculoId);
+
+			System.out.println("\nIngrese la nueva información del cliente:");
+
+			System.out.print("Nombre: ");
+			String nombre = teclado.nextLine();
+
+			System.out.print("Apellidos: ");
+			String apellidos = teclado.nextLine();
+
+			System.out.print("DNI: ");
+			String dni = teclado.nextLine();
+
+			System.out.print("Dirección: ");
+			String direccion = teclado.nextLine();
+
+			System.out.print("Cuenta corriente: ");
+			String cuentaCorriente = teclado.nextLine();
+
+			// Actualizar la información del cliente en la base de datos
+			actualizarCliente(clienteId, nombre, apellidos, dni, direccion, cuentaCorriente);
+
+			System.out.println("\nIngrese la nueva información del vehículo:");
+
+			System.out.print("Marca: ");
+			String marca = teclado.nextLine();
+
+			System.out.print("Modelo: ");
+			String modelo = teclado.nextLine();
+
+			System.out.print("Color: ");
+			String color = teclado.nextLine();
+
+			System.out.print("Motor: ");
+			String motor = teclado.nextLine();
+
+			System.out.print("Matrícula: ");
+			String matricula = teclado.nextLine();
+
+			System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
+			String tipo = teclado.nextLine();
+
+			// Actualizar la información del vehículo en la base de datos
+			actualizarVehiculo(vehiculoId, marca, modelo, color, motor, matricula, tipo.toLowerCase());
+
+			System.out.println("\n¡Plaza editada con éxito!");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
-	
-	// Método para eliminar una plaza
-	public static void eliminarPlaza() {
-		
+
+	// Método para eliminar los datos asociados a una plaza alquilada
+	public static void eliminarDatos() {
+	    try {
+	        // Establecer conexión a la base de datos
+	        connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+	        String query = "SELECT p.numero_plaza FROM plazas p WHERE p.disponible = false";
+
+	        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+	            if (rs.next()) {
+	                System.out.println("Plazas alquiladas:");
+	                do {
+	                    String numeroPlaza = rs.getString("numero_plaza");
+	                    System.out.println("Plaza: " + numeroPlaza);
+	                } while (rs.next());
+
+	                Scanner teclado = new Scanner(System.in);
+	                System.out.print("Seleccione el número de la plaza que desea eliminar: ");
+	                String numeroPlaza = teclado.nextLine().toUpperCase();
+
+	                eliminarRegistrosPlaza(numeroPlaza);
+	                actualizarEstadoPlaza(numeroPlaza, true);
+
+	                System.out.println("Plaza eliminada y marcada como disponible correctamente.");
+	            } else {
+	                System.out.println("No hay plazas alquiladas.");
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
-	
 	// Método para listar plazas
 	public static void listarPlazas() {
-		
+	    try {
+	        // Establecer la conexión a la base de datos
+	        Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+	        String queryAlquiladas = "SELECT p.numero_plaza, p.precio, c.nombre, c.apellido, v.marca, v.modelo "
+	                + "FROM plazas p "
+	                + "JOIN clientes c ON p.id_plaza = c.id_plaza "
+	                + "JOIN vehiculo v ON c.id_vehiculo = v.id_vehiculo";
+
+	        String queryDisponibles = "SELECT p.numero_plaza "
+	                + "FROM plazas p "
+	                + "WHERE p.disponible = true";
+
+	        try (Statement stmt = connection.createStatement()) {
+	            System.out.println("Listado de alquileres actuales:");
+	            try (ResultSet rsAlquiladas = stmt.executeQuery(queryAlquiladas)) {
+	                while (rsAlquiladas.next()) {
+	                    String numeroPlaza = rsAlquiladas.getString("numero_plaza");
+	                    double precio = rsAlquiladas.getDouble("precio");
+	                    String nombreCliente = rsAlquiladas.getString("nombre");
+	                    String apellidoCliente = rsAlquiladas.getString("apellido");
+	                    String marcaVehiculo = rsAlquiladas.getString("marca");
+	                    String modeloVehiculo = rsAlquiladas.getString("modelo");
+
+	                    System.out.println("Plaza: " + numeroPlaza);
+	                    System.out.println("Precio mensual: " + precio + " euros");
+	                    System.out.println("Cliente: " + nombreCliente + " " + apellidoCliente);
+	                    System.out.println("Vehículo: " + marcaVehiculo + " " + modeloVehiculo);
+	                    System.out.println("-------------------------------------------");
+	                }
+	            }
+
+	            System.out.println("Listado de plazas disponibles:");
+	            try (ResultSet rsDisponibles = stmt.executeQuery(queryDisponibles)) {
+	                while (rsDisponibles.next()) {
+	                    String numeroPlaza = rsDisponibles.getString("numero_plaza");
+
+	                    System.out.println("Plaza: " + numeroPlaza);
+	                    System.out.println("-------------------------------------------");
+	                }
+	            }
+	        }
+
+	        // Cerrar la conexión a la base de datos
+	        connection.close();
+
+	        // Solicitar al usuario si desea guardar el informe como un archivo TXT
+	        System.out.println("¿Desea guardar el informe como un archivo TXT? (Y/N)");
+	        Scanner scanner = new Scanner(System.in);
+	        String respuesta = scanner.nextLine().trim().toUpperCase();
+
+	        if (respuesta.equals("Y")) {
+	            guardarInformeComoTXT();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
-	
-	
+
+
+
 }
-
-
