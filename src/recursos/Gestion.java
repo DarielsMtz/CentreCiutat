@@ -5,19 +5,26 @@ import java.sql.*;
 import java.util.*;
 
 public class Gestion {
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/centreciutat";
-	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "";
-
-	private static Connection connection;
 	
+	// Variables con los datos de la conexcion a la base datos
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/centreciutat"; // Enlace
+	private static final String DB_USER = "root"; // Usuario
+	private static final String DB_PASSWORD = ""; // Contraseña
 
+	// Variables para establecer las conexcion con la base de datos
+	private static Connection connection; 
+		
+
+	// Metodo principal de la clase GESTION
 	public static void main(String[] args) {
 		BBDD.ejectutarMetodos();
 	}
 
-	// CONSULTAS
+	/*
+	 * CONSULTAS A LA BASE DE DATOS
+	 */
 
+	// Metodo para ingresar clientes en su tabla
 	private static int insertarCliente(String nombre, String apellido, String dni, String direccion,
 			String cuentaCorriente) throws SQLException {
 		String sql = "INSERT INTO clientes (nombre, apellido, dni, direccion, cuenta_corriente) VALUES (?, ?, ?, ?, ?)";
@@ -37,6 +44,7 @@ public class Gestion {
 		}
 	}
 
+	// Metodo para ingresar vehiculos en su tabla
 	private static int insertarVehiculo(String marca, String modelo, String color, String motor, String matricula,
 			String tipo) throws SQLException {
 		String sql = "INSERT INTO vehiculo (marca, modelo, color, motor, matricula, tipo) VALUES (?, ?, ?, ?, ?, ?)";
@@ -57,6 +65,7 @@ public class Gestion {
 		}
 	}
 
+	// Metodo para verificar si las plazas estan disponibles
 	private static boolean verificarPlazaDisponible(String numeroPlaza) throws SQLException {
 		String sql = "SELECT disponible FROM plazas WHERE numero_plaza = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -70,6 +79,7 @@ public class Gestion {
 		}
 	}
 
+	// Metodo para listar todaas las plaza disponibles
 	private static void mostrarPlazasDisponibles() throws SQLException {
 		String sql = "SELECT numero_plaza FROM plazas WHERE disponible = true";
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -147,7 +157,6 @@ public class Gestion {
 	    }
 	}
 
-
 	// Método para verificar si una plaza seleccionada existe y está ocupada
 	private static boolean verificarPlazaOcupada(String numeroPlaza) throws SQLException {
 		String query = "SELECT disponible FROM plazas WHERE numero_plaza = ?";
@@ -191,8 +200,6 @@ public class Gestion {
 	    return -1;
 	}
 
-
-
 	// Método para mostrar la información actual del cliente asociado a una plaza
 	private static void mostrarCliente(String numeroPlaza) throws SQLException {
 	    String query = "SELECT * FROM clientes c JOIN plazas p ON c.id_plaza = p.id_plaza WHERE p.numero_plaza = ?";
@@ -234,7 +241,6 @@ public class Gestion {
 	    }
 	}
 
-
 	// Método para eliminar los registros de cliente y vehículo asociados a una plaza
 	private static void eliminarRegistrosPlaza(String numeroPlaza) {
 	    try {
@@ -261,7 +267,7 @@ public class Gestion {
 	    }
 	}
 
-
+	// Metod para generar un informe en formato .txt
 	private static void guardarInformeComoTXT() {
 	    try {
 	        // Crear un archivo de texto en la ubicación especificada
@@ -335,7 +341,9 @@ public class Gestion {
 	}
 
 
-	// METODOS
+	/*
+	 * METODOS PARA MANIPULARA LAS PLAZAS
+	 */
 
 	// Método para alquilar plazas
 	public static void alquilarPlaza() {
@@ -556,7 +564,6 @@ public class Gestion {
 	    }
 	}
 
-
 	// Método para eliminar los datos asociados a una plaza alquilada
 	public static void eliminarDatos() {
 	    try {
@@ -656,7 +663,5 @@ public class Gestion {
 	        e.printStackTrace();
 	    }
 	}
-
-
 
 }
