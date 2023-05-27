@@ -444,82 +444,118 @@ public class Gestion {
 
 	// Método para editar plazas
 	public static void editarPlaza() {
-		try {
-			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-			System.out.println("Conexión establecida correctamente!");
+	    try {
+	        connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+	        System.out.println("Conexión establecida correctamente!");
 
-			Scanner teclado = new Scanner(System.in);
+	        Scanner teclado = new Scanner(System.in);
 
-			System.out.println("Plazas de estacionamiento:");
-			mostrarPlazas(); // Mostrar todas las plazas disponibles
+	        System.out.println("Plazas de estacionamiento:");
+	        mostrarPlazas(); // Mostrar todas las plazas disponibles
 
-			System.out.print("Seleccione el número de la plaza que desea editar: ");
-			String numeroPlaza = teclado.nextLine().toUpperCase();
+	        String numeroPlaza;
+	        do {
+	            System.out.print("Seleccione el número de la plaza que desea editar: ");
+	            numeroPlaza = teclado.nextLine().toUpperCase();
 
-			// Verificar si la plaza seleccionada existe y está ocupada
-			if (!verificarPlazaOcupada(numeroPlaza)) {
-				System.out.println("La plaza seleccionada no existe o no está ocupada.");
-				return;
-			}
+	            // Verificar si la plaza seleccionada existe y está ocupada
+	            if (!verificarPlazaOcupada(numeroPlaza)) {
+	                System.out.println("La plaza seleccionada no existe o no está ocupada. Intente nuevamente.");
+	            }
+	        } while (!verificarPlazaOcupada(numeroPlaza));
 
-			// Obtener la información actual del cliente y vehículo asociados a la plaza
-			int clienteId = obtenerClienteIdPorPlaza(numeroPlaza);
-			int vehiculoId = obtenerVehiculoIdPorPlaza(numeroPlaza);
+	        // Obtener la información actual del cliente y vehículo asociados a la plaza
+	        int clienteId = obtenerClienteIdPorPlaza(numeroPlaza);
+	        int vehiculoId = obtenerVehiculoIdPorPlaza(numeroPlaza);
 
-			mostrarCliente(numeroPlaza);
+	        mostrarCliente(numeroPlaza);
 
-			mostrarVehiculo(numeroPlaza);
-			System.out.println("clienteId: " + clienteId);
-			System.out.println("vehiculoId: " + vehiculoId);
+	        mostrarVehiculo(numeroPlaza);
+	        System.out.println("clienteId: " + clienteId);
+	        System.out.println("vehiculoId: " + vehiculoId);
 
-			System.out.println("\nIngrese la nueva información del cliente:");
+	        System.out.println("\nIngrese la nueva información del cliente:");
 
-			System.out.print("Nombre: ");
-			String nombre = teclado.nextLine();
+	        String nombre;
+	        do {
+	            System.out.print("Nombre: ");
+	            nombre = teclado.nextLine();
+	        } while (nombre.isEmpty());
 
-			System.out.print("Apellidos: ");
-			String apellidos = teclado.nextLine();
+	        String apellidos;
+	        do {
+	            System.out.print("Apellidos: ");
+	            apellidos = teclado.nextLine();
+	        } while (apellidos.isEmpty());
 
-			System.out.print("DNI: ");
-			String dni = teclado.nextLine();
+	        String dni;
+	        do {
+	            System.out.print("DNI: ");
+	            dni = teclado.nextLine();
+	        } while (dni.isEmpty());
 
-			System.out.print("Dirección: ");
-			String direccion = teclado.nextLine();
+	        String direccion;
+	        do {
+	            System.out.print("Dirección: ");
+	            direccion = teclado.nextLine();
+	        } while (direccion.isEmpty());
 
-			System.out.print("Cuenta corriente: ");
-			String cuentaCorriente = teclado.nextLine();
+	        String cuentaCorriente;
+	        do {
+	            System.out.print("Cuenta corriente: ");
+	            cuentaCorriente = teclado.nextLine();
+	        } while (cuentaCorriente.isEmpty());
 
-			// Actualizar la información del cliente en la base de datos
-			actualizarCliente(clienteId, nombre, apellidos, dni, direccion, cuentaCorriente);
+	        // Actualizar la información del cliente en la base de datos
+	        actualizarCliente(clienteId, nombre, apellidos, dni, direccion, cuentaCorriente);
 
-			System.out.println("\nIngrese la nueva información del vehículo:");
+	        System.out.println("\nIngrese la nueva información del vehículo:");
 
-			System.out.print("Marca: ");
-			String marca = teclado.nextLine();
+	        String marca;
+	        do {
+	            System.out.print("Marca: ");
+	            marca = teclado.nextLine();
+	        } while (marca.isEmpty());
 
-			System.out.print("Modelo: ");
-			String modelo = teclado.nextLine();
+	        String modelo;
+	        do {
+	            System.out.print("Modelo: ");
+	            modelo = teclado.nextLine();
+	        } while (modelo.isEmpty());
 
-			System.out.print("Color: ");
-			String color = teclado.nextLine();
+	        String color;
+	        do {
+	            System.out.print("Color: ");
+	            color = teclado.nextLine();
+	        } while (color.isEmpty());
 
-			System.out.print("Motor: ");
-			String motor = teclado.nextLine();
+	        String motor;
+	        do {
+	            System.out.print("Motor: ");
+	            motor = teclado.nextLine();
+	        } while (motor.isEmpty());
 
-			System.out.print("Matrícula: ");
-			String matricula = teclado.nextLine();
+	        String matricula;
+	        do {
+	            System.out.print("Matrícula: ");
+	            matricula = teclado.nextLine();
+	        } while (matricula.isEmpty());
 
-			System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
-			String tipo = teclado.nextLine();
+	        String tipo;
+	        do {
+	            System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
+	            tipo = teclado.nextLine();
+	        } while (tipo.isEmpty());
 
-			// Actualizar la información del vehículo en la base de datos
-			actualizarVehiculo(vehiculoId, marca, modelo, color, motor, matricula, tipo.toLowerCase());
+	        // Actualizar la información del vehículo en la base de datos
+	        actualizarVehiculo(vehiculoId, marca, modelo, color, motor, matricula, tipo.toLowerCase());
 
-			System.out.println("\n¡Plaza editada con éxito!");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+	        System.out.println("\n¡Plaza editada con éxito!");
+	    } catch (SQLException e1) {
+	        e1.printStackTrace();
+	    }
 	}
+
 
 	// Método para eliminar los datos asociados a una plaza alquilada
 	public static void eliminarDatos() {
@@ -538,8 +574,11 @@ public class Gestion {
 	                } while (rs.next());
 
 	                Scanner teclado = new Scanner(System.in);
-	                System.out.print("Seleccione el número de la plaza que desea eliminar: ");
-	                String numeroPlaza = teclado.nextLine().toUpperCase();
+	                String numeroPlaza;
+	                do {
+	                    System.out.print("Seleccione el número de la plaza que desea eliminar: ");
+	                    numeroPlaza = teclado.nextLine().toUpperCase();
+	                } while (numeroPlaza.isEmpty());
 
 	                eliminarRegistrosPlaza(numeroPlaza);
 	                actualizarEstadoPlaza(numeroPlaza, true);
@@ -553,6 +592,7 @@ public class Gestion {
 	        e.printStackTrace();
 	    }
 	}
+
 	// Método para listar plazas
 	public static void listarPlazas() {
 	    try {
@@ -602,9 +642,12 @@ public class Gestion {
 	        connection.close();
 
 	        // Solicitar al usuario si desea guardar el informe como un archivo TXT
-	        System.out.println("¿Desea guardar el informe como un archivo TXT? (Y/N)");
-	        Scanner scanner = new Scanner(System.in);
-	        String respuesta = scanner.nextLine().trim().toUpperCase();
+	        String respuesta;
+	        do {
+	            System.out.println("¿Desea guardar el informe como un archivo TXT? (Y/N)");
+	            Scanner scanner = new Scanner(System.in);
+	            respuesta = scanner.nextLine().trim().toUpperCase();
+	        } while (respuesta.isEmpty());
 
 	        if (respuesta.equals("Y")) {
 	            guardarInformeComoTXT();
