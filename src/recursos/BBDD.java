@@ -187,9 +187,9 @@ public class BBDD {
 		agregarUsuarioValidado(con, insertString, "admin", "admin3", "admin3");
 
 		// Crear usuarios normales
-		agregarUsuarioValidado(con, insertString, "normal", "usuario1", "user1");
-		agregarUsuarioValidado(con, insertString, "normal", "usuario2", "user2");
-		agregarUsuarioValidado(con, insertString, "normal", "usuario3", "user3");
+		agregarUsuarioValidado(con, insertString, "usuario", "usuario1", "usuario1");
+		agregarUsuarioValidado(con, insertString, "usuario", "usuario2", "usuario2");
+		agregarUsuarioValidado(con, insertString, "usuario", "usuario3", "usuario3");
 
 		System.out.println("Usuarios agregados correctamente!");
 

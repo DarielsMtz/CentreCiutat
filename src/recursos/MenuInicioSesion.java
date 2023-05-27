@@ -7,11 +7,16 @@ public class MenuInicioSesion {
 
 	private Connection connection;
 
+	// Metodo principal de la clase
 	public static void main(String[] args) {
+
+		BBDD.ejectutarMetodos();
+
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
 	}
 
+	// Metod para verificar la conexcion con la base de datos
 	public MenuInicioSesion() {
 
 		// Establecer conexión con la base de datos
@@ -25,6 +30,7 @@ public class MenuInicioSesion {
 		}
 	}
 
+	// Metodo para recoger la opcion por teclado
 	public boolean iniciarSesion(String tipoUsuario) {
 		Scanner scanner = new Scanner(System.in);
 
@@ -80,22 +86,23 @@ public class MenuInicioSesion {
 
 			switch (opcion) {
 			case 1:
-				// Dos opciones de usuario
 				login = iniciarSesion("admin");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como administrador.");
 					// Se llama a las acciones del administrador
-					 menuAdmin();
+					menuAdmin();
+
 				} else {
 					System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
 					System.out.println("");
 				}
 				break;
 			case 2:
-				// Dos opciones de usuario
 				login = iniciarSesion("usuario");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como usuario normal.");
+					// Se llama a las acciones del usuario
+					menuUsuario();
 
 				} else {
 					System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
@@ -121,10 +128,93 @@ public class MenuInicioSesion {
 		return scanner.nextInt();
 	}
 
-	 // Metodo para las opciones del admin
-	
-	// Consola de admin
-	// BBDD.ejectutarMetodos();
+	// Menu de acciones del usuario
+	private static void menuUsuario() {
+		System.out.println("=================================");
+		System.out.println("===== Centre Ciutat Parking =====");
+		System.out.println("=================================");
+		System.out.println("---------------------------------");
+		System.out.println("---    Bienvenido  Usuario    ---");
+		System.out.println("---------------------------------");
+		System.out.println("");
+		
+		 // Lee el DNI o la matrícula ingresados por teclado
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("- Ingrese un \"DNI\" o una \"Matrícula\": ");
+        String dniMatricula = scanner.nextLine();
+        
+        // Llama al método para consultar los datos
+        consultarDatos(dniMatricula);
+	}
+
+	   // Método para consultar los datos relacionados a un DNI o una matrícula
+    public static void consultarDatos(String dniMatricula) {
+        String url = "jdbc:mysql://localhost:3306/centreciutat"; // Reemplaza "nombre_base_de_datos" por el nombre real de tu base de datos
+		String usuario = "root";
+		String contraseña = "";
+
+		try (Connection conn = DriverManager.getConnection(url, usuario, contraseña)) {
+			// Consulta para obtener los datos relacionados al DNI o la matrícula
+			String consulta = "SELECT * FROM clientes "
+					+ "JOIN vehiculo ON clientes.id_vehiculo = vehiculo.id_vehiculo "
+					+ "JOIN plazas ON clientes.id_plaza = plazas.id_plaza "
+					+ "WHERE dni = ? OR matricula = ?";
+
+			PreparedStatement statement = conn.prepareStatement(consulta);
+			statement.setString(1, dniMatricula);
+			statement.setString(2, dniMatricula);
+
+			ResultSet resultado = statement.executeQuery();
+
+			// Recorre los resultados y muestra los datos
+			while (resultado.next()) {
+				int idCliente = resultado.getInt("id_cliente");
+				String nombre = resultado.getString("nombre");
+				String apellido = resultado.getString("apellido");
+				String dni = resultado.getString("dni");
+				String direccion = resultado.getString("direccion");
+				String cuentaCorriente = resultado.getString("cuenta_corriente");		
+				String marca = resultado.getString("marca");
+				String modelo = resultado.getString("modelo");
+				String color = resultado.getString("color");
+				String motor = resultado.getString("motor");
+				String matricula = resultado.getString("matricula");
+				String tipo = resultado.getString("tipo");
+				String plaza = resultado.getString("id_plaza");
+
+				System.out.println("");
+				System.out.println("----------------------------------");
+				System.out.println("---      Información Cliente   ---");
+				System.out.println("----------------------------------");
+				System.out.println("ID Cliente: " + idCliente);
+				System.out.println("Nombre: " + nombre);
+				System.out.println("Apellido: " + apellido);
+				System.out.println("DNI: " + dni);
+				System.out.println("Dirección: " + direccion);
+				System.out.println("Cuenta corriente: " + cuentaCorriente);
+				System.out.println("----------------------------------");
+				System.out.println("---      Información Coche     ---");
+				System.out.println("----------------------------------");
+				System.out.println("Marca: " + marca);
+				System.out.println("Modelo: " + modelo);
+				System.out.println("Color: " + color);
+				System.out.println("Motor: " + motor);
+				System.out.println("Matrícula: " + matricula);
+				System.out.println("Tipo: " + tipo);
+				System.out.println("Plaza: " + plaza);
+				System.out.println("----------------------------------");
+				System.out.println("");
+			}
+
+			// Cierra los recursos
+			resultado.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Menu de acciones del admin
 	private static void menuAdmin() {
 		Scanner in = new Scanner(System.in);
 
