@@ -10,8 +10,6 @@ public class MenuInicioSesion {
 	// Metodo principal de la clase
 	public static void main(String[] args) {
 
-		BBDD.ejectutarMetodos();
-
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
 	}
@@ -19,6 +17,7 @@ public class MenuInicioSesion {
 	// Metod para verificar la conexcion con la base de datos
 	public MenuInicioSesion() {
 
+		BBDD.ejectutarMetodos();
 		// Establecer conexión con la base de datos
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");

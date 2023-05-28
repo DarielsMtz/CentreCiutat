@@ -215,8 +215,6 @@ public class BBDD {
 	}
 	
 	// Metodo para agregar las plazas
-
-	// Metodo para agregar las plazas
 	protected static void agregarPlazas(Connection con) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
