@@ -118,6 +118,7 @@ public class MenuInicioSesion {
 		} while (!login);
 	}
 
+	
 	private int obtenerNumero() {
 		Scanner scanner = new Scanner(System.in);
 		while (!scanner.hasNextInt()) {
@@ -136,19 +137,19 @@ public class MenuInicioSesion {
 		System.out.println("---    Bienvenido  Usuario    ---");
 		System.out.println("---------------------------------");
 		System.out.println("");
-		
-		 // Lee el DNI o la matrícula ingresados por teclado
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("- Ingrese un \"DNI\" o una \"Matrícula\": ");
-        String dniMatricula = scanner.nextLine();
-        
-        // Llama al método para consultar los datos
-        consultarDatos(dniMatricula);
+
+		// Lee el DNI o la matrícula ingresados por teclado
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("- Ingrese un \"DNI\" o una \"Matrícula\": ");
+		String dniMatricula = scanner.nextLine();
+
+		// Llama al método para consultar los datos
+		consultarDatos(dniMatricula);
 	}
 
-	   // Método para consultar los datos relacionados a un DNI o una matrícula
-    public static void consultarDatos(String dniMatricula) {
-        String url = "jdbc:mysql://localhost:3306/centreciutat"; // Reemplaza "nombre_base_de_datos" por el nombre real de tu base de datos
+	// Método para consultar los datos relacionados a un DNI o una matrícula
+	public static void consultarDatos(String dniMatricula) {
+		String url = "jdbc:mysql://localhost:3306/centreciutat";
 		String usuario = "root";
 		String contraseña = "";
 
@@ -156,8 +157,7 @@ public class MenuInicioSesion {
 			// Consulta para obtener los datos relacionados al DNI o la matrícula
 			String consulta = "SELECT * FROM clientes "
 					+ "JOIN vehiculo ON clientes.id_vehiculo = vehiculo.id_vehiculo "
-					+ "JOIN plazas ON clientes.id_plaza = plazas.id_plaza "
-					+ "WHERE dni = ? OR matricula = ?";
+					+ "JOIN plazas ON clientes.id_plaza = plazas.id_plaza " + "WHERE dni = ? OR matricula = ?";
 
 			PreparedStatement statement = conn.prepareStatement(consulta);
 			statement.setString(1, dniMatricula);
@@ -172,7 +172,7 @@ public class MenuInicioSesion {
 				String apellido = resultado.getString("apellido");
 				String dni = resultado.getString("dni");
 				String direccion = resultado.getString("direccion");
-				String cuentaCorriente = resultado.getString("cuenta_corriente");		
+				String cuentaCorriente = resultado.getString("cuenta_corriente");
 				String marca = resultado.getString("marca");
 				String modelo = resultado.getString("modelo");
 				String color = resultado.getString("color");

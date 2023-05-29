@@ -179,8 +179,8 @@ public class BBDD {
 	// Metodo para agregar los usuario
 	protected static void agregarUsuarios(Connection con) throws SQLException {
 
-		String insertString = "INSERT INTO usuarios (tipo, nombre_usuario, contrasena) VALUES (?, ?, ?)";
-
+		String insertString ="INSERT IGNORE INTO usuarios (tipo, nombre_usuario, contrasena) VALUES (?, ?, ?)";
+					
 		// Crear usuarios admin
 		agregarUsuarioValidado(con, insertString, "admin", "admin1", "admin1");
 		agregarUsuarioValidado(con, insertString, "admin", "admin2", "admin2");
@@ -218,22 +218,15 @@ public class BBDD {
 	protected static void agregarPlazas(Connection con) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
-
 		try {
 			stmt = con.createStatement();
-
 			// Consulta para contar los registros en la tabla plazas
 			String countQuery = "SELECT COUNT(*) AS count FROM " + DB_NAME + ".plazas";
 			rs = stmt.executeQuery(countQuery);
-
 			if (rs.next()) {
 				int count = rs.getInt("count");
-
 				if (count == 0) {
 					// La tabla plazas está vacía, proceder a insertar los registros
-
-					// Campos de la tabla plazas
-					// ID, disponible, tamaño, numero_plaza, precio
 					stmt.executeUpdate(
 							"INSERT INTO " + DB_NAME + ".plazas (disponible, tamaño, numero_plaza, precio) VALUES "
 									+ "(true, '10m2', '1A21', 80)," // 1 plaza
@@ -247,14 +240,12 @@ public class BBDD {
 									+ "(true, '10m2', '1A29', 80)," // 9 plaza
 									+ "(true, '10m2', '1A30', 80)" // 10 plaza
 					);
-
 					System.out.println("");
 					System.out.println("Se han agregado las plazas correctamente!");
 				} else {
 					System.out.println("La tabla plazas no está vacía. No se agregaron las plazas.");
 				}
 			}
-
 		} catch (SQLException e) {
 			printSQLException(e);
 		} finally {
@@ -271,21 +262,17 @@ public class BBDD {
 	public static void agregarClientesVehiculos(Connection con) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
-
 		try {
 			stmt = con.createStatement();
-
 			// Verificar si las tablas están vacías
 			String queryClientes = "SELECT COUNT(*) FROM clientes";
 			ResultSet rsClientes = stmt.executeQuery(queryClientes);
 			rsClientes.next();
 			int countClientes = rsClientes.getInt(1);
-
 			String queryVehiculos = "SELECT COUNT(*) FROM vehiculo";
 			ResultSet rsVehiculos = stmt.executeQuery(queryVehiculos);
 			rsVehiculos.next();
 			int countVehiculos = rsVehiculos.getInt(1);
-
 			if (countClientes == 0 && countVehiculos == 0) {
 				// Insertar vehículos
 				String insertVehiculos = "INSERT INTO vehiculo (id_vehiculo, marca, modelo, color, motor, matricula, tipo) VALUES "
@@ -293,24 +280,20 @@ public class BBDD {
 						+ "(2, 'Honda', 'CBR600', 'Rojo', 'Gasolina', '5678DEF', 'moto'), "
 						+ "(3, 'Renault', 'Kangoo', 'Blanco', 'Diésel', '9012GHI', 'furgoneta')";
 				stmt.executeUpdate(insertVehiculos);
-
 				// Insertar clientes
 				String insertClientes = "INSERT INTO clientes (id_cliente, id_plaza, id_vehiculo, nombre, apellido, dni, direccion, cuenta_corriente) VALUES "
 						+ "(1, (SELECT id_plaza FROM plazas WHERE numero_plaza = '1A25'), 1, 'Juan', 'Pérez', '11111111A', 'Calle Mayor 1', 'ES1234567890123456789012'), "
 						+ "(2, (SELECT id_plaza FROM plazas WHERE numero_plaza = '1A27'), 2, 'María', 'García', '22222222B', 'Avenida Libertad 10', 'ES2345678901234567890123'), "
 						+ "(3, (SELECT id_plaza FROM plazas WHERE numero_plaza = '1A30'), 3, 'Pedro', 'López', '33333333C', 'Plaza España 5', 'ES3456789012345678901234')";
 				stmt.executeUpdate(insertClientes);
-
 				// Actualizar estado de las plazas
 				String updatePlazas = "UPDATE plazas SET disponible = false WHERE numero_plaza IN ('1A25', '1A27', '1A30')";
 				stmt.executeUpdate(updatePlazas);
-
 				System.out.println("Clientes y vehículos agregados exitosamente.");
 			} else {
 				System.out.println(
 						"Las tablas de clientes y vehículos no están vacías. No se realizó ninguna inserción.");
 			}
-
 			// Cerrar la conexión a la base de datos
 			con.close();
 		} catch (SQLException e) {
