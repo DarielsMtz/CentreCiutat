@@ -21,7 +21,7 @@ public class MenuInicioSesion {
 		// Establecer conexión con la base de datos
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
-			System.out.println("Se ha establecido la conexcion a la BBDD correctamente!");
+			System.out.println("Se ha establecido la conexión a la BBDD correctamente!");
 
 		} catch (SQLException e) {
 			System.out.println("Error al conectar con la base de datos: " + e.getMessage());
@@ -73,7 +73,7 @@ public class MenuInicioSesion {
 			System.out.println("================================");
 			System.out.println("");
 			System.out.println("--------------------------------");
-			System.out.println("---     Inicio de Sesion     ---");
+			System.out.println("---     Inicio de Sesión     ---");
 			System.out.println("--------------------------------");
 			System.out.println("|     1. Administrador         |");
 			System.out.println("|     2. Usuario               |");
@@ -192,7 +192,7 @@ public class MenuInicioSesion {
 				System.out.println("Dirección: " + direccion);
 				System.out.println("Cuenta corriente: " + cuentaCorriente);
 				System.out.println("----------------------------------");
-				System.out.println("---      Información Coche     ---");
+				System.out.println("---    Información Vehículo    ---");
 				System.out.println("----------------------------------");
 				System.out.println("Marca: " + marca);
 				System.out.println("Modelo: " + modelo);
@@ -231,10 +231,10 @@ public class MenuInicioSesion {
 			System.out.println("----------------------------------------");
 			System.out.println();
 			System.out.println("----------------------------------------");
-			System.out.println("|        1. Alquilar plazas            |)");
-			System.out.println("|        2. Editar plazas              |");
-			System.out.println("|        3. Eliminar plazas            |)");
-			System.out.println("|        4. Listar plazas              |");
+			System.out.println("|          1. Alquilar plazas          |");
+			System.out.println("|          2. Editar plazas            |");
+			System.out.println("|          3. Eliminar plazas          |");
+			System.out.println("|          4. Listar plazas            |");
 			System.out.println("----------------------------------------");
 			System.out.println("");
 			System.out.println("  - ¡Escribe \"exit\" para salir! -      ");
@@ -259,7 +259,8 @@ public class MenuInicioSesion {
 			}
 
 		} while (!admin_action.equalsIgnoreCase("exit"));
-		System.out.println("FIN DE PROGRAMA");
+		
+		System.out.println("Finalizando programa, ¡hasta la póxima!");
 		in.close();
 	}
 }
