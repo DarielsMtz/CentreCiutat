@@ -75,9 +75,9 @@ public class MenuInicioSesion {
 			System.out.println("--------------------------------");
 			System.out.println("---     Inicio de Sesión     ---");
 			System.out.println("--------------------------------");
-			System.out.println("|     1. Administrador         |");
-			System.out.println("|     2. Usuario               |");
-			System.out.println("|     3. Salir                 |");
+			System.out.println("|       1. Administrador       |");
+			System.out.println("|       2. Usuario             |");
+			System.out.println("|       3. Salir               |");
 			System.out.println("--------------------------------");
 			System.out.println("");
 			System.out.print("- Ingrese una opción:-\n");
@@ -134,7 +134,7 @@ public class MenuInicioSesion {
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
 		System.out.println("---------------------------------");
-		System.out.println("---    Bienvenido  Usuario    ---");
+		System.out.println("---    Bienvenido Usuario     ---");
 		System.out.println("---------------------------------");
 		System.out.println("");
 
@@ -183,7 +183,7 @@ public class MenuInicioSesion {
 
 				System.out.println("");
 				System.out.println("----------------------------------");
-				System.out.println("---      Información Cliente   ---");
+				System.out.println("---    Información Cliente     ---");
 				System.out.println("----------------------------------");
 				System.out.println("ID Cliente: " + idCliente);
 				System.out.println("Nombre: " + nombre);
@@ -237,7 +237,7 @@ public class MenuInicioSesion {
 			System.out.println("|          4. Listar plazas            |");
 			System.out.println("----------------------------------------");
 			System.out.println("");
-			System.out.println("  - ¡Escribe \"exit\" para salir! -      ");
+			System.out.println("  - ¡Escribe \"exit\" para salir! -     ");
 
 			admin_action = in.next();
 
