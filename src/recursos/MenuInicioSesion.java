@@ -21,7 +21,7 @@ public class MenuInicioSesion {
 		// Establecer conexión con la base de datos
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
-			System.out.println("Se ha establecido la conexión a la BBDD correctamente!");
+			//System.out.println("Se ha establecido la conexión a la BBDD correctamente!");
 
 		} catch (SQLException e) {
 			System.out.println("Error al conectar con la base de datos: " + e.getMessage());

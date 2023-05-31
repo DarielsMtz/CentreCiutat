@@ -3,7 +3,7 @@ package recursos;
 import java.sql.*;
 
 public class BBDD {
-	
+
 	// Variables con los datos de la conexcion a la base datos
 	private static final String URL = "jdbc:mysql://localhost:3306/centreciutat"; // Enlace
 	private static final String DB_NAME = "centreciutat"; // Nombre de la BBDD
@@ -13,11 +13,11 @@ public class BBDD {
 	// Metodoq que agrupa todos los metos y los ejecuta simultaneamente
 	public static void ejectutarMetodos() {
 		try {
-			
+
 			crearBaseDeDatos();
 			Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			System.out.println("Conexión establecida correctamente!");
-			
+
 			crearTablaUsuarios(con);
 			crearTablaVehiculo(con);
 			crearTablaPlazas(con);
@@ -47,7 +47,7 @@ public class BBDD {
 		}
 
 	}
- 
+
 	// Metodo para crea la base de datos
 	public static void crearBaseDeDatos() throws SQLException {
 		// Establece los detalles de conexión a la base de datos
@@ -67,7 +67,8 @@ public class BBDD {
 			stmt = con.createStatement();
 			// Ejecuta la consulta para crear la base de datos
 			stmt.executeUpdate(createDatabaseQuery);
-			System.out.println("La base de datos '" + DB_NAME + "' se ha creado correctamente!");
+			// System.out.println("La base de datos '" + DB_NAME + "' se ha creado
+			// correctamente!");
 		} catch (SQLException e) {
 			printSQLException(e);
 		} finally {
@@ -90,9 +91,11 @@ public class BBDD {
 			// Ejecutamos las consultas
 			stmt.executeUpdate(createString);
 
-			System.out.println("");
-			System.out.println("Se ha creado la tabla Plaza, correctamente!");
-			System.out.println("Se añadió la foreign key id_cliente_alquiler");
+			/*
+			 * System.out.println("");
+			 * System.out.println("Se ha creado la tabla Plaza, correctamente!");
+			 * System.out.println("Se añadió la foreign key id_cliente_alquiler");
+			 */
 
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -115,8 +118,10 @@ public class BBDD {
 			// Ejecuatmos la consulta
 			stmt.executeUpdate(createString);
 
-			System.out.println("");
-			System.out.println("Se ha creado la tabla Vehiculo correctamente!");
+			/*
+			 * System.out.println("");
+			 * System.out.println("Se ha creado la tabla Vehiculo correctamente!");
+			 */
 
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -139,11 +144,12 @@ public class BBDD {
 			stmt = con.createStatement();
 			// ejecutamos la consulta
 			stmt.executeUpdate(createString);
-
-			System.out.println("");
-			System.out.println("Se ha creado la tabla Clientes correctamente!!");
-			System.out.println("Se añadió la foreign key id_vehiculo");
-			System.out.println("Se añadió la foreign key id_plaza");
+			/*
+			 * System.out.println("");
+			 * System.out.println("Se ha creado la tabla Clientes correctamente!!");
+			 * System.out.println("Se añadió la foreign key id_vehiculo");
+			 * System.out.println("Se añadió la foreign key id_plaza");
+			 */
 		} catch (SQLException e) {
 			printSQLException(e);
 		} finally {
@@ -166,7 +172,7 @@ public class BBDD {
 			// ejecutamos la consulta
 			stmt.executeUpdate(createString);
 			System.out.println("");
-			System.out.println("Se ha creado la tabla de Usuarios correctamente!");
+			// System.out.println("Se ha creado la tabla de Usuarios correctamente!");
 
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -179,8 +185,8 @@ public class BBDD {
 	// Metodo para agregar los usuario
 	protected static void agregarUsuarios(Connection con) throws SQLException {
 
-		String insertString ="INSERT IGNORE INTO usuarios (tipo, nombre_usuario, contrasena) VALUES (?, ?, ?)";
-					
+		String insertString = "INSERT IGNORE INTO usuarios (tipo, nombre_usuario, contrasena) VALUES (?, ?, ?)";
+
 		// Crear usuarios admin
 		agregarUsuarioValidado(con, insertString, "admin", "admin1", "admin1");
 		agregarUsuarioValidado(con, insertString, "admin", "admin2", "admin2");
@@ -191,29 +197,34 @@ public class BBDD {
 		agregarUsuarioValidado(con, insertString, "usuario", "usuario2", "usuario2");
 		agregarUsuarioValidado(con, insertString, "usuario", "usuario3", "usuario3");
 
-		System.out.println("Usuarios agregados correctamente!");
-
+		// System.out.println("Usuarios agregados correctamente!");
 	}
 
-	// Metodo auxiliar para validar los usurios
 	private static void agregarUsuarioValidado(Connection con, String insertString, String tipo, String nombreUsuario,
 			String contrasena) throws SQLException {
-		PreparedStatement vstmt = null;
-		try {
-			vstmt = con.prepareStatement(insertString);
-			vstmt.setString(1, tipo);
-			vstmt.setString(2, nombreUsuario);
-			vstmt.setString(3, contrasena);
-			vstmt.executeUpdate();
-		} catch (SQLException e) {
-			printSQLException(e);
-		} finally {
-			if (vstmt != null) {
-				vstmt.close();
+		// Verificar si el usuario ya existe en la base de datos
+		String selectString = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = ?";
+		try (PreparedStatement selectStmt = con.prepareStatement(selectString)) {
+			selectStmt.setString(1, nombreUsuario);
+			try (ResultSet resultSet = selectStmt.executeQuery()) {
+				resultSet.next();
+				int count = resultSet.getInt(1);
+				if (count == 0) {
+					// El usuario no existe, realizar la inserción
+					try (PreparedStatement insertStmt = con.prepareStatement(insertString)) {
+						insertStmt.setString(1, tipo);
+						insertStmt.setString(2, nombreUsuario);
+						insertStmt.setString(3, contrasena);
+						insertStmt.executeUpdate();
+					}
+				} else {
+					// System.out.println("El usuario " + nombreUsuario + " ya existe en la base de
+					// datos. No se agregará de nuevo.");
+				}
 			}
 		}
 	}
-	
+
 	// Metodo para agregar las plazas
 	protected static void agregarPlazas(Connection con) throws SQLException {
 		Statement stmt = null;
@@ -240,10 +251,11 @@ public class BBDD {
 									+ "(true, '10m2', '1A29', 80)," // 9 plaza
 									+ "(true, '10m2', '1A30', 80)" // 10 plaza
 					);
-					System.out.println("");
-					System.out.println("Se han agregado las plazas correctamente!");
+					// System.out.println("");
+					// System.out.println("Se han agregado las plazas correctamente!");
 				} else {
-					System.out.println("La tabla plazas no está vacía. No se agregaron las plazas.");
+					// System.out.println("La tabla plazas no está vacía. No se agregaron las
+					// plazas.");
 				}
 			}
 		} catch (SQLException e) {
@@ -291,8 +303,7 @@ public class BBDD {
 				stmt.executeUpdate(updatePlazas);
 				System.out.println("Clientes y vehículos agregados exitosamente.");
 			} else {
-				System.out.println(
-						"Las tablas de clientes y vehículos no están vacías. No se realizó ninguna inserción.");
+				//System.out.println("Las tablas de clientes y vehículos no están vacías. No se realizó ninguna inserción.");
 			}
 			// Cerrar la conexión a la base de datos
 			con.close();
