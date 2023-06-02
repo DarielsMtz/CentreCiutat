@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"recursos","l":"BBDD"},{"p":"main","l":"CentreCiutat"},{"p":"recursos","l":"Gestion"},{"p":"recursos","l":"MenuInicioSesion"}];updateSearchResults();

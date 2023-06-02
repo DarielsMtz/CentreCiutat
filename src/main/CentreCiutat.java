@@ -3,7 +3,7 @@ package main;
 import recursos.MenuInicioSesion;
 
 /**
- * Clase principal que inicia la aplicación Centre Ciutat. Esta clase contiene
+ * Clase principal que inicia la aplicacion Centre Ciutat. Esta clase contiene
  * el método principal, el cual se encarga de crear una instancia de la clase
  * MenuInicioSesion y llamar al método mostrarMenu() para mostrar el menú de
  * inicio de sesión y permitir al usuario seleccionar una opción.
