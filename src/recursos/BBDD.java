@@ -2,15 +2,43 @@ package recursos;
 
 import java.sql.*;
 
+/**
+ * Esta clase proporciona métodos para configurar y llenar una base de datos. Se
+ * establece una conexión con la base de datos utilizando la URL, nombre de
+ * usuario y contraseña proporcionados. A continuación, se crean las tablas
+ * necesarias en la base de datos y se agregan datos a las tablas
+ * correspondientes. Si se produce una excepción de tipo SQLException, se
+ * imprime el mensaje de error.
+ */
 public class BBDD {
 
 	// Variables con los datos de la conexcion a la base datos
+	/**
+	 * Enlace a la base de datos
+	 */
 	private static final String URL = "jdbc:mysql://localhost:3306/centreciutat"; // Enlace
+	/**
+	 * Nombre de la base de datos
+	 */
 	private static final String DB_NAME = "centreciutat"; // Nombre de la BBDD
+	/**
+	 * Nombre del usuario para acceder a la base de datos
+	 */
 	private static final String USERNAME = "root"; // Usuario
+	/**
+	 * Contraseña para acceder a la base de datos
+	 */
 	private static final String PASSWORD = ""; // Contraseña
 
-	// Metodoq que agrupa todos los metos y los ejecuta simultaneamente
+	// Metodo que agrupa todos los metodos y los ejecuta simultaneamente
+	/**
+	 * Ejecuta una serie de métodos para configurar y llenar una base de datos. Se
+	 * establece una conexión con la base de datos utilizando la URL, nombre de
+	 * usuario y contraseña proporcionados. A continuación, se crean las tablas
+	 * necesarias en la base de datos y se agregan datos a las tablas
+	 * correspondientes. Si se produce una excepción de tipo SQLException, se
+	 * imprime el mensaje de error.
+	 */
 	public static void ejectutarMetodos() {
 		try {
 
@@ -32,6 +60,12 @@ public class BBDD {
 	}
 
 	// Metodo de SQLException
+	/**
+	 * Imprime una excepción de tipo SQLException junto con su información
+	 * relacionada.
+	 * 
+	 * @param exception La excepción SQLException a imprimir.
+	 */
 	protected static void printSQLException(SQLException exception) {
 
 		exception.printStackTrace(System.err);
@@ -49,6 +83,13 @@ public class BBDD {
 	}
 
 	// Metodo para crea la base de datos
+	/**
+	 * Crea una base de datos utilizando los detalles de conexión proporcionados. Si
+	 * la base de datos ya existe, no se realiza ninguna acción.
+	 * 
+	 * @throws SQLException si ocurre un error durante la conexión o la ejecución de
+	 *                      la consulta
+	 */
 	public static void crearBaseDeDatos() throws SQLException {
 		// Establece los detalles de conexión a la base de datos
 		String url = "jdbc:mysql://localhost:3306/";
@@ -78,6 +119,18 @@ public class BBDD {
 	}
 
 	// Crea la tabla de plazas de estacionamiento
+	/**
+	 * Crea una tabla llamada "plazas" en la base de datos especificada. Si la tabla
+	 * ya existe, no se realiza ninguna acción. La tabla tiene los siguientes
+	 * campos: - id_plaza: identificador de la plaza (clave primaria,
+	 * autoincremental) - Disponible: indica si la plaza está disponible o no
+	 * (booleano, no nulo) - tamaño: tamaño de la plaza (cadena de caracteres, no
+	 * nulo) - numero_plaza: número de la plaza (cadena de caracteres, no nulo) -
+	 * precio: precio de la plaza (doble, no nulo)
+	 *
+	 * @param con la conexión a la base de datos
+	 * @throws SQLException si ocurre un error durante la creación de la tabla
+	 */
 	public static void crearTablaPlazas(Connection con) throws SQLException {
 
 		String createString = "CREATE TABLE IF NOT EXISTS plazas (" + "id_plaza INT PRIMARY KEY AUTO_INCREMENT,"
@@ -105,7 +158,16 @@ public class BBDD {
 	}
 
 	// Metodo para crear la tabla vehiculo
+	/**
+	 * Crea una tabla llamada "vehiculo" en la base de datos especificada con las
+	 * distintas columnas correspondiente a los atributos de un vehículo. Si la
+	 * tabla ya existe, no se realiza ninguna acción.
+	 * 
+	 * @param con la conexión a la base de datos
+	 * @throws SQLException si ocurre algún error al ejecutar la consulta SQL
+	 */
 	protected static void crearTablaVehiculo(Connection con) throws SQLException {
+
 		String createString = "CREATE TABLE IF NOT EXISTS vehiculo (" + "id_vehiculo INT PRIMARY KEY AUTO_INCREMENT,"
 				+ "marca VARCHAR(50) NOT NULL," + "modelo VARCHAR(50) NOT NULL," + "color VARCHAR(50) NOT NULL,"
 				+ "motor VARCHAR(50) NOT NULL," + "matricula VARCHAR(50) NOT NULL,"
@@ -131,6 +193,14 @@ public class BBDD {
 	}
 
 	// Metodo para crear la tabla Clientes
+	/**
+	 * 
+	 * Crea una tabla "clientes" en la base de campos corespondientes a los datos de
+	 * los clientes *
+	 * 
+	 * @param con la conexión a la base de datos
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	protected static void crearTablaCliente(Connection con) throws SQLException {
 		String createString = "CREATE TABLE IF NOT EXISTS clientes (" + "id_cliente INT PRIMARY KEY AUTO_INCREMENT,"
 				+ "nombre VARCHAR(50) NOT NULL," + "apellido VARCHAR(50) NOT NULL," + "dni VARCHAR(50) NOT NULL,"
@@ -158,6 +228,14 @@ public class BBDD {
 	}
 
 	// Metodo para crear Usuario
+	/**
+	 * Crea una tabla llamada "usuarios" en la base de datos con las columnas:
+	 * id_usuario, tipo, nombre_usuario y contrasena. Si la tabla ya existe, no se
+	 * realiza ninguna acción.
+	 *
+	 * @param con La conexión a la base de datos.
+	 * @throws SQLException Si ocurre algún error al ejecutar la consulta SQL.
+	 */
 	protected static void crearTablaUsuarios(Connection con) throws SQLException {
 
 		String createString = "CREATE TABLE IF NOT EXISTS usuarios (" + "id_usuario INT PRIMARY KEY AUTO_INCREMENT,"
@@ -183,6 +261,15 @@ public class BBDD {
 	}
 
 	// Metodo para agregar los usuario
+	/**
+	 * 
+	 * Agrega usuarios a la base de datos, estableciendo por defecto el tipo, el
+	 * usuario y la contraseña
+	 * 
+	 * @param con la conexión a la base de datos
+	 * 
+	 * @throws SQLException si ocurre un error al acceder a la base de datos
+	 */
 	protected static void agregarUsuarios(Connection con) throws SQLException {
 
 		String insertString = "INSERT IGNORE INTO usuarios (tipo, nombre_usuario, contrasena) VALUES (?, ?, ?)";
@@ -200,6 +287,18 @@ public class BBDD {
 		// System.out.println("Usuarios agregados correctamente!");
 	}
 
+	// Metodo para la validad de exitenca de los usuarios
+	/**
+	 * Agrega un usuario validado a la tabla usuarios de la base de datos.
+	 * 
+	 * @param con           la conexión a la base de datos
+	 * @param insertString  la cadena SQL para insertar el usuario en la base de
+	 *                      datos
+	 * @param tipo          el tipo de usuario
+	 * @param nombreUsuario el nombre de usuario a agregar
+	 * @param contrasena    la contraseña del usuario
+	 * @throws SQLException si ocurre un error al ejecutar la consulta SQL
+	 */
 	private static void agregarUsuarioValidado(Connection con, String insertString, String tipo, String nombreUsuario,
 			String contrasena) throws SQLException {
 		// Verificar si el usuario ya existe en la base de datos
@@ -226,6 +325,15 @@ public class BBDD {
 	}
 
 	// Metodo para agregar las plazas
+	/**
+	 * 
+	 * Este método agrega plazas a la base de datos. Se agrega por defecto la
+	 * disponibilida de las plazas, su tamaño, su numero de indentificación y su
+	 * precio.
+	 * 
+	 * @param con la conexión a la base de datos
+	 * @throws SQLException si ocurre un error al interactuar con la base de datos
+	 */
 	protected static void agregarPlazas(Connection con) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -271,6 +379,18 @@ public class BBDD {
 	}
 
 	// Metodo para agregar vehiculos a los clientes
+	/**
+	 * Este método agrega clientes y vehículos a la base de datos. Para ello,
+	 * verifica si las tablas de clientes y vehículos están vacías. Si ambas están
+	 * vacías, se insertan registros de vehículos y clientes preestablecidos, y se
+	 * actualiza el estado de las plazas correspondientes. Si alguna de las tablas
+	 * no está vacía, no se realiza ninguna inserción. Al finalizar, se cierra la
+	 * conexión a la base de datos.
+	 * 
+	 * @param con la conexión a la base de datos
+	 * @throws SQLException si ocurre algún error al interactuar con la base de
+	 *                      datos
+	 */
 	public static void agregarClientesVehiculos(Connection con) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -303,7 +423,8 @@ public class BBDD {
 				stmt.executeUpdate(updatePlazas);
 				System.out.println("Clientes y vehículos agregados exitosamente.");
 			} else {
-				//System.out.println("Las tablas de clientes y vehículos no están vacías. No se realizó ninguna inserción.");
+				// System.out.println("Las tablas de clientes y vehículos no están vacías. No se
+				// realizó ninguna inserción.");
 			}
 			// Cerrar la conexión a la base de datos
 			con.close();
