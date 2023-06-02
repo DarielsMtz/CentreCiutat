@@ -8,5 +8,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/db4o-8.0.276.16149-all-java5.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-j-8.0.33.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.13.2-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
