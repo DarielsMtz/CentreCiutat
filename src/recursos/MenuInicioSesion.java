@@ -3,25 +3,53 @@ package recursos;
 import java.sql.*;
 import java.util.Scanner;
 
+/**
+ * La clase MenuInicioSesion representa la clase de inicio de sesión para el
+ * programa. Permite a los usuarios iniciar sesión como administrador o usuario
+ * normal. Proporciona un menú de opciones y realiza operaciones relacionadas
+ * con la gestión del programa y la interacción con una base de datos.
+ */
 public class MenuInicioSesion {
 
+	// Variable para establecer las conexcion con la base de datos
+	/**
+	 * Variblae para establecer la conexion de la bbdd
+	 */
 	private Connection connection;
 
 	// Metodo principal de la clase
+	/**
+	 * Este método es el punto de entrada principal del programa. Inicia con un
+	 * llamado a la interfas del menu
+	 * 
+	 * @param args los argumentos de la línea de comandos (no se utilizan en este
+	 *             método)
+	 */
 	public static void main(String[] args) {
 
+		// Se llama al metodo para mostrar por completo el menu
 		MenuInicioSesion menu = new MenuInicioSesion();
 		menu.mostrarMenu();
 	}
 
 	// Metod para verificar la conexcion con la base de datos
+	/**
+	 * Constructor de la clase MenuInicioSesion. Realiza el llamado a los distintos
+	 * métodos relacionados con la gestión del programa. Establece la conexión con
+	 * la base de datos.
+	 * 
+	 * @throws SQLException si se produce un error al conectar con la base de datos.
+	 */
 	public MenuInicioSesion() {
 
+		// Se hace un llamdo a los distintos metodos relacionado con las gestion del
+		// programa
 		BBDD.ejectutarMetodos();
+
 		// Establecer conexión con la base de datos
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/centreciutat", "root", "");
-			//System.out.println("Se ha establecido la conexión a la BBDD correctamente!");
+			// System.out.println("Se ha establecido la conexión a la BBDD correctamente!");
 
 		} catch (SQLException e) {
 			System.out.println("Error al conectar con la base de datos: " + e.getMessage());
@@ -29,20 +57,30 @@ public class MenuInicioSesion {
 		}
 	}
 
-	// Metodo para recoger la opcion por teclado
+	// Método para recoger los datos por teclado
+	/**
+	 * 
+	 * Metodo para llevar acabo el inicio de sesión de un usuario en el sistema.
+	 * 
+	 * @param tipoUsuario el tipo de usuario que está iniciando sesión
+	 * 
+	 * @return true si el inicio de sesión es exitoso, false en caso contrario
+	 */
 	public boolean iniciarSesion(String tipoUsuario) {
 		Scanner scanner = new Scanner(System.in);
 
-		// Peticion del Usuario
+		// Se hace una petición del Usuario
 		System.out.print("Ingrese el usuario: \n");
 		String nombreUsuario = scanner.nextLine();
 
-		// peticion de la contraseña
+		// Se hace una petición de la contraseña
 		System.out.print("Ingrese la contraseña: \n");
+
 		String contrasena = scanner.nextLine();
 		try {
 			String query = "SELECT COUNT(*) FROM usuarios WHERE tipo = ? AND nombre_usuario = ? AND contrasena = ?";
 
+			// Ejecutamos la consulta
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, tipoUsuario);
 			statement.setString(2, nombreUsuario);
@@ -61,12 +99,20 @@ public class MenuInicioSesion {
 		return false;
 	}
 
-	// Metodo que muestra las opciones de inicio de sesion
+	// Método que muestra las opciones de inicio de sesión
+	/**
+	 * 
+	 * Muestra el menú de inicio de sesión y permite al usuario seleccionar una
+	 * opción. Si el inicio de sesión es exitoso, redirige al usuario al menú
+	 * correspondiente según su rol. Si el inicio de sesión falla, muestra un
+	 * mensaje de error.
+	 */
 	public void mostrarMenu() {
 
 		boolean login = false;
 
 		do {
+			// Interfaz del menu de inicio de sesion
 			System.out.println("");
 			System.out.println("================================");
 			System.out.println("== Centre Ciutat Parking v0.1 ==");
@@ -81,14 +127,16 @@ public class MenuInicioSesion {
 			System.out.println("--------------------------------");
 			System.out.println("");
 			System.out.print("- Ingrese una opción:-\n");
+
 			int opcion = obtenerNumero();
 
+			// Opciones de usuarios para inicias sesión
 			switch (opcion) {
 			case 1:
 				login = iniciarSesion("admin");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como administrador.");
-					// Se llama a las acciones del administrador
+					// Se llama al metodo de las acciones del usuario admin
 					menuAdmin();
 
 				} else {
@@ -100,7 +148,7 @@ public class MenuInicioSesion {
 				login = iniciarSesion("usuario");
 				if (login) {
 					System.out.println("Inicio de sesión exitoso como usuario normal.");
-					// Se llama a las acciones del usuario
+					// Se llama al metod de las acciones del usuario normal
 					menuUsuario();
 
 				} else {
@@ -118,9 +166,15 @@ public class MenuInicioSesion {
 		} while (!login);
 	}
 
-	
+	// Método para obtener y validar la opciones
+	/**
+	 * Método que obtiene un número ingresado por teclado.
+	 *
+	 * @return el número ingresado por el usuario.
+	 */
 	private int obtenerNumero() {
 		Scanner scanner = new Scanner(System.in);
+		// Lee el numero/opción ingresado por teclado
 		while (!scanner.hasNextInt()) {
 			System.out.print("Ingrese una opción válida, porfavor: ");
 			scanner.next();
@@ -128,8 +182,14 @@ public class MenuInicioSesion {
 		return scanner.nextInt();
 	}
 
-	// Menu de acciones del usuario
+	// Menu de acciones del usuario Normal
+	/**
+	 * Muestra el menú de usuario y permite ingresar un DNI o una matrícula para
+	 * consultar los datos. Luego llama al método 'consultarDatos' para obtener los
+	 * datos correspondientes a su DNI.
+	 */
 	private static void menuUsuario() {
+		// Interfaz del menu
 		System.out.println("=================================");
 		System.out.println("===== Centre Ciutat Parking =====");
 		System.out.println("=================================");
@@ -148,12 +208,20 @@ public class MenuInicioSesion {
 	}
 
 	// Método para consultar los datos relacionados a un DNI o una matrícula
+	/**
+	 * Metodo que actua cono consulta para los datos de un cliente y su vehículo en
+	 * la base de datos.
+	 * 
+	 * @param dniMatricula El DNI o la matrícula del cliente a consultar.
+	 */
 	public static void consultarDatos(String dniMatricula) {
-		String url = "jdbc:mysql://localhost:3306/centreciutat";
-		String usuario = "root";
-		String contraseña = "";
+		// Establecemos una conexion con la base de datos
+		String url = "jdbc:mysql://localhost:3306/centreciutat"; // Enlace
+		String usuario = "root"; // Usuario
+		String contraseña = ""; // Contraseña
 
 		try (Connection conn = DriverManager.getConnection(url, usuario, contraseña)) {
+
 			// Consulta para obtener los datos relacionados al DNI o la matrícula
 			String consulta = "SELECT * FROM clientes "
 					+ "JOIN vehiculo ON clientes.id_vehiculo = vehiculo.id_vehiculo "
@@ -181,6 +249,7 @@ public class MenuInicioSesion {
 				String tipo = resultado.getString("tipo");
 				String plaza = resultado.getString("id_plaza");
 
+				// Informacion del Cleinte
 				System.out.println("");
 				System.out.println("----------------------------------");
 				System.out.println("---    Información Cliente     ---");
@@ -191,6 +260,8 @@ public class MenuInicioSesion {
 				System.out.println("DNI: " + dni);
 				System.out.println("Dirección: " + direccion);
 				System.out.println("Cuenta corriente: " + cuentaCorriente);
+
+				// Informacion del vehiculo
 				System.out.println("----------------------------------");
 				System.out.println("---    Información Vehículo    ---");
 				System.out.println("----------------------------------");
@@ -208,18 +279,28 @@ public class MenuInicioSesion {
 			// Cierra los recursos
 			resultado.close();
 			statement.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// Menu de acciones del admin
+	// Menu de acciones del usuario Admin
+	/**
+	 * Método que muestra el menú de administrador y permite realizar distintas
+	 * acciones. Las opciones disponibles son: alquilar plazas, editar plazas,
+	 * eliminar plazas y listar plazas. El administrador puede seleccionar una
+	 * opción ingresando el número por teclado. El bucle del menú se repite hasta
+	 * que el administrador ingrese "exit" para salir. Al finalizar, se cierran los
+	 * recursos utilizados.
+	 */
 	private static void menuAdmin() {
 		Scanner in = new Scanner(System.in);
 
 		String admin_action;
 
 		do {
+			// Interfaz del menu
 			System.out.println();
 			System.out.println("========================================");
 			System.out.println("=====  Centre Ciutat Parking v0.1  =====");
@@ -241,6 +322,7 @@ public class MenuInicioSesion {
 
 			admin_action = in.next();
 
+			// Opciones a selecionar
 			switch (admin_action) {
 			case "1":
 				Gestion.alquilarPlaza();
@@ -259,7 +341,8 @@ public class MenuInicioSesion {
 			}
 
 		} while (!admin_action.equalsIgnoreCase("exit"));
-		
+
+		// Cerramso los recurso
 		System.out.println("Finalizando programa, ¡hasta la póxima!");
 		in.close();
 	}
