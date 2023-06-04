@@ -294,7 +294,7 @@ public class MenuInicioSesion {
 	 * que el administrador ingrese "exit" para salir. Al finalizar, se cierran los
 	 * recursos utilizados.
 	 */
-	private static void menuAdmin() {
+	static void menuAdmin() {
 		Scanner in = new Scanner(System.in);
 
 		String admin_action;
