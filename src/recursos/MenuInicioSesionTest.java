@@ -2,6 +2,7 @@ package recursos;
 
 import org.junit.jupiter.api.*;
 import org.mockito.*;
+import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -10,21 +11,16 @@ import java.sql.*;
 
 class MenuInicioSesionTest {
 
-	private static final String URL = "jdbc:mysql://localhost:3306/centreciutat";
-	private static final String USERNAME = "root";
-	private static final String PASSWORD = "";
+	private static final String URL = "jdbc:mysql://localhost:3306/centreciutat", USERNAME = "root", 
+			PASSWORD = "";
 	
     private Connection con;
     private MenuInicioSesion menu;
     
     @Mock
     private Connection conMock;
-    
-    @Mock
-    private PreparedStatement stmt;
-    
-    @Mock
     private ResultSet resultSet;
+    private PreparedStatement stmt;
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -41,23 +37,24 @@ class MenuInicioSesionTest {
     }
 
     @Test
-    void iniciarSesion_validCredentials_returnsFalse() throws SQLException {
+    void validarCredenciales() throws SQLException {
         
         String tipoUsuario = "admin";
-
+        String nombreUsuario = "admin1";
+        String contrasena = "admin1";
+        
         PreparedStatement stmt = mock(PreparedStatement.class);
         ResultSet resultSet = mock(ResultSet.class);
 
         when(con.prepareStatement(anyString())).thenReturn(stmt);
         when(stmt.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getInt(1)).thenReturn(1);
+        when(resultSet.getObject(nombreUsuario));
+        when(resultSet.getObject(contrasena));
 
-        // Act
         boolean result = menu.iniciarSesion(tipoUsuario);
 
-        // Assert
-        assertFalse(result);
+        assertTrue(result);
     }
     
     @Test
@@ -71,7 +68,7 @@ class MenuInicioSesionTest {
 
     @Test
     void iniciarSesionFallo() throws SQLException {
-        Mockito.when(resultSet.getInt(1)).thenReturn(1);
+        Mockito.when(resultSet.getInt(1)).thenReturn(0);
 
         assertFalse(menu.iniciarSesion("admin"));
         Mockito.verify(conMock).prepareStatement(Mockito.anyString());
