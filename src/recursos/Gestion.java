@@ -604,11 +604,22 @@ public class Gestion {
 				matricula = teclado.nextLine();
 			} while (matricula.trim().isEmpty()); // Repetir hasta que se proporcione una matrícula válida
 
+			// Correccion del ingreso del tipo de vehiculo
 			do {
 				System.out.print("Tipo de vehículo (coche, moto, furgoneta): ");
 				tipo = teclado.nextLine();
-			} while (tipo.trim().isEmpty()); // Repetir hasta que se proporcione un tipo de vehículo válido
-			tipo = tipo.toLowerCase();
+
+				// Corrección tipo
+				String tipoVehiculo = tipo.toLowerCase();
+				if (!tipoVehiculo.equals("coche") && !tipoVehiculo.equals("moto")
+						&& !tipoVehiculo.equals("furgoneta")) {
+					System.out.println(
+							"Error: Tipo de vehículo inválido. Por favor, ingrese 'coche', 'moto' o 'furgoneta'.");
+				}
+			} while (tipo.trim().isEmpty() || (!tipo.equalsIgnoreCase("coche") && !tipo.equalsIgnoreCase("moto")
+					&& !tipo.equalsIgnoreCase("furgoneta")));
+			// Fin
+
 			vehiculoId = insertarVehiculo(marca, modelo, color, motor, matricula, tipo.toLowerCase());
 			if (vehiculoId == -1) {
 				System.out.println("No se pudo insertar el vehículo en la base de datos.");
@@ -634,6 +645,7 @@ public class Gestion {
 			vincularClienteVehiculoPlaza(clienteId, vehiculoId, numeroPlaza);
 
 			System.out.println("\n¡Plaza alquilada con éxito!");
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
