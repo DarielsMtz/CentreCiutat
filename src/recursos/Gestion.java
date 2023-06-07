@@ -536,6 +536,8 @@ public class Gestion {
 	 *                      de datos.
 	 */
 	public static void alquilarPlaza() {
+		boolean cancelarAlquiler = false;
+
 		try {
 			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 			System.out.println("Conexión establecida correctamente!");
@@ -628,6 +630,21 @@ public class Gestion {
 
 			System.out.println("Plazas de estacionamiento disponibles:");
 			mostrarPlazasDisponibles();
+
+			// Solucion a cancelar alquiler
+			System.out.println("Ingrese \"cancelar\" para abortar el alquiler.");
+			System.out.print("Seleccione el número de la plaza de estacionamiento: ");
+			numeroPlaza = teclado.nextLine().toUpperCase();
+
+			if (numeroPlaza.equalsIgnoreCase("cancelar")) {
+				cancelarAlquiler = true;
+			}
+
+			if (cancelarAlquiler) {
+				System.out.println("Alquiler cancelado. Cambios descartados!S");
+				return;
+			}
+			// Fin
 
 			do {
 				System.out.print("Seleccione el número de la plaza de estacionamiento: ");
