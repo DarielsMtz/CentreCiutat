@@ -823,7 +823,7 @@ public class Gestion {
 
 					Scanner teclado = new Scanner(System.in);
 					String numeroPlaza;
-
+					
 					// Correción formato
 					boolean plazaValida = false;
 					;
@@ -873,7 +873,7 @@ public class Gestion {
 			// Establecer la conexión a la base de datos
 			Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-			String queryAlquiladas = "SELECT p.numero_plaza, p.precio, c.nombre, c.apellido, v.marca, v.modelo "
+			String queryAlquiladas = "SELECT p.numero_plaza, p.precio, p.tamaño, c.nombre, c.apellido, v.marca, v.modelo "
 					+ "FROM plazas p " + "JOIN clientes c ON p.id_plaza = c.id_plaza "
 					+ "JOIN vehiculo v ON c.id_vehiculo = v.id_vehiculo";
 
@@ -884,6 +884,7 @@ public class Gestion {
 				try (ResultSet rsAlquiladas = stmt.executeQuery(queryAlquiladas)) {
 					while (rsAlquiladas.next()) {
 						String numeroPlaza = rsAlquiladas.getString("numero_plaza");
+						String tamañoPlaza = rsAlquiladas.getString("tamaño");
 						double precio = rsAlquiladas.getDouble("precio");
 						String nombreCliente = rsAlquiladas.getString("nombre");
 						String apellidoCliente = rsAlquiladas.getString("apellido");
@@ -891,6 +892,7 @@ public class Gestion {
 						String modeloVehiculo = rsAlquiladas.getString("modelo");
 
 						System.out.println("Plaza: " + numeroPlaza);
+						System.out.println("Tamaño: " + tamañoPlaza);
 						System.out.println("Precio mensual: " + precio + " euros");
 						System.out.println("Cliente: " + nombreCliente + " " + apellidoCliente);
 						System.out.println("Vehículo: " + marcaVehiculo + " " + modeloVehiculo);
