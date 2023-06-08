@@ -644,6 +644,7 @@ public class Gestion {
 				System.out.println("Alquiler cancelado. Cambios descartados!S");
 				return;
 			}
+
 			// Fin
 
 			do {
@@ -814,6 +815,7 @@ public class Gestion {
 			try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 				if (rs.next()) {
 					System.out.println("Plazas alquiladas:");
+
 					do {
 						String numeroPlaza = rs.getString("numero_plaza");
 						System.out.println("Plaza: " + numeroPlaza);
@@ -821,11 +823,23 @@ public class Gestion {
 
 					Scanner teclado = new Scanner(System.in);
 					String numeroPlaza;
+
+					// Correción formato
+					boolean plazaValida = false;
+					;
 					do {
 						System.out.print("Seleccione el número de la plaza que desea eliminar: ");
 						numeroPlaza = teclado.nextLine().toUpperCase();
-					} while (numeroPlaza.isEmpty());
 
+						// Validar el formato
+						if (numeroPlaza.matches("1A(2[1-9]|30)")) {
+							plazaValida = true;
+						} else {
+							System.out.println("Error: Número de plaza invalido. Intente nuevamente!");
+						}
+						;
+					} while (!plazaValida);
+					// Fin
 					eliminarRegistrosPlaza(numeroPlaza);
 					actualizarEstadoPlaza(numeroPlaza, true);
 
