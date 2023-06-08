@@ -873,7 +873,8 @@ public class Gestion {
 			// Establecer la conexión a la base de datos
 			Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-			String queryAlquiladas = "SELECT p.numero_plaza, p.precio, p.tamaño, c.nombre, c.apellido, v.marca, v.modelo "
+			String queryAlquiladas = "SELECT p.numero_plaza, p.precio, p.tamaño, c.nombre, "
+					+ "c.apellido, v.marca, v.modelo "
 					+ "FROM plazas p " + "JOIN clientes c ON p.id_plaza = c.id_plaza "
 					+ "JOIN vehiculo v ON c.id_vehiculo = v.id_vehiculo";
 
@@ -890,7 +891,6 @@ public class Gestion {
 						String apellidoCliente = rsAlquiladas.getString("apellido");
 						String marcaVehiculo = rsAlquiladas.getString("marca");
 						String modeloVehiculo = rsAlquiladas.getString("modelo");
-
 						System.out.println("Plaza: " + numeroPlaza);
 						System.out.println("Tamaño: " + tamañoPlaza);
 						System.out.println("Precio mensual: " + precio + " euros");
